@@ -2,24 +2,41 @@
 title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
 
 format: 
-  pdf:
+  html:
     fig-pos: "H"
 bibliography: citations.bib
 csl: apa-5th-edition.csl
 editor: 
   markdown: 
     wrap: 80
+  references: 
+    location: block
+author:
+  - name: Jeremy Miles^1^
+  - name: Alexander Miles^2^
+  - name: Mark Shevlin^3^
+page-layout: article
 ---
 
-Authors:
+^1^Google, Los Angeles, USA and University of Southern California, USA;
+jeremy.miles\@gmail.com
 
-Jeremy Miles (Google, Los Angeles, USA)
+^2^University of Southern California, USA; alex\@milesfamily.name
 
-Alexander Miles (University of Southern California, USA)
+^3^University of Ulster, UK; m.shevlin\@ulster.ac.uk
 
-Mark Shevlin (University of Ulster, UK)
+There have been recent calls for researchers in social science methodological
+research to consider replication as an This paper reports on a replication of
+@curran1996robustness, using more recently developed, open source software (the
+simsem and Lavaan packages in R). The results that we obtain are substantively
+equivalent to the results obtained in the original paper, but some minor
+discrepancies were found, and we discuss the possible reasons. We conclude with
+an argument that replication of simulation studies can be useful and
+informative, and thanks to the rise of open source analysis software, websites
+that increase ability to share code and improvements in computer hardware, the
+costs of replication are dramatically reduced.
 
-# Background
+# Introduction
 
 The replication crisis has provoked a great deal of soul searching in many
 branches of science, including psychology. However, methodologists have recently
@@ -37,58 +54,58 @@ perfectly replicable - no need for replication, no replication crisis.
 we should consider replicating simulation studies.
 
 1.  They can have a major impact. @hu1999cutoff has been cited, according to
-    Google Scholar, over 113,000 times.
+Google Scholar, over 113,000 times.
 
 2.  Simulation reseachers have conflicts of interest too. Although conventional
-    p-hacking would not be done in simulation studies, and could select the
-    specific methods, sample sizes, etc to compare. Less honest researchers
-    could even selectively choose random seeds that reflect their preferences.
+p-hacking would not be done in simulation studies, and could select the
+specific methods, sample sizes, etc to compare. Less honest researchers
+could even selectively choose random seeds that reflect their preferences.
 
 3.  Selective reporting. Simulation studies can include enormous numbers of
-    combinations of parameters, leading to an explosion of parameters.
-    @hu1999cutoff contains 8 pages of tables in the results section, and a
-    further 23 pages of tables in the appendix. Most researchers (and readers)
-    would prefer a more succinct paper.
+combinations of parameters, leading to an explosion of parameters.
+@hu1999cutoff contains 8 pages of tables in the results section, and a
+further 23 pages of tables in the appendix. Most researchers (and readers)
+would prefer a more succinct paper.
 
 4.  Differing audiences. Simulation studies are written, reviewed, and read
-    primarily by methodological researchers. A replication may be aimed at
-    substantive researchers who are less interested in the nuances of the
-    techniques, and more interested in knowing which technique is most
-    appropriate for their problem at hand.
+primarily by methodological researchers. A replication may be aimed at
+substantive researchers who are less interested in the nuances of the
+techniques, and more interested in knowing which technique is most
+appropriate for their problem at hand.
 
 5.  Code is written by (fallible) humans. The study may be designed, but the
-    code needs to be written to match the design as described in the paper.
-    @schonbrodt2018corrigendum discovered that the description of the study in
-    their paper, and the accompanying code did not match. This is only
-    discoverable if the code is available, which it frequently is not. In
-    addition, the code runs on more software - even if the code that I use is
-    accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might
-    not be. For example, @rigdon1991performance found that the performance of
-    LISREL's WLS estimation method was not producing consistent estimation.
+code needs to be written to match the design as described in the paper.
+@schonbrodt2018corrigendum discovered that the description of the study in
+their paper, and the accompanying code did not match. This is only
+discoverable if the code is available, which it frequently is not. In
+addition, the code runs on more software - even if the code that I use is
+accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might
+not be. For example, @rigdon1991performance found that the performance of
+LISREL's WLS estimation method was not producing consistent estimation.
 
 6.  Every scenario cannot be simulated. A simulation study samples a specific
-    parameter space. An analyst then tries to extrapolate to the particular
-    situation that they find themselves in; a replication might be helpful here.
+parameter space. An analyst then tries to extrapolate to the particular
+situation that they find themselves in; a replication might be helpful here.
 
 7.  Hidden moderators. Did the initial researchers make an assumption that is
-    hidden. @lohmann2022s argue that only by '*getting our hands dirty, diving
-    deep into the details, and actually retracing each step via replication*'
-    can we uncover such threats to validity.
+hidden. @lohmann2022s argue that only by '*getting our hands dirty, diving
+deep into the details, and actually retracing each step via replication*'
+can we uncover such threats to validity.
 
 8.  Replication allows us to reflect. Replicating another study is the best
-    (perhaps the only) way to discover the ways in which we could improve our
-    presentation
+(perhaps the only) way to discover the ways in which we could improve our
+presentation
 
 9.  Leading by example. Methodologists argue that research should be clear,
-    accessible and open. Let's show applied researchers how to do it.
+accessible and open. Let's show applied researchers how to do it.
 
 10. Because we can. Replication of a simulation study is straightforward
-    compared with replication of much empirical research, which ranges from
-    'difficult' to 'impossible and expensive'. We are in a unique position to be
-    able to make contributions to the literature and improve the research
-    quality of an entire field, without dealing with funding bodies, research
-    ethics committees, or even needing to leave our desk. Given how
-    straightforward this is, why not do it?
+compared with replication of much empirical research, which ranges from
+'difficult' to 'impossible and expensive'. We are in a unique position to be
+able to make contributions to the literature and improve the research
+quality of an entire field, without dealing with funding bodies, research
+ethics committees, or even needing to leave our desk. Given how
+straightforward this is, why not do it?
 
 To their list, we add one more. Replications are frequently software dependent.
 If we find differences across software implementations, we do not need to
@@ -191,6 +208,7 @@ suppressMessages({
   library(semPlot)
   library(simsem)
   library(snow)
+  library(tidyr)
 })
 
 set.seed(42)
@@ -286,7 +304,13 @@ fit_4_1000 <- lavaan::cfa(
 
 ```
 
-@fig-pop_model_1 and @fig_pop_model_2 show the population parameters of the data generating models. The model without cross-loadings (used for models 1 and 2) contains three latent variables (with variance equal to 1), each of which is indicated by three measured variables, with loadings equal to 0.7, and latent variable covariances of 0.3. The model with cross loadings is equivalent to the previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to y6, with loadings equal to 0.35.
+@fig-pop_model_1 and @fig-pop_model_2 show the population parameters of the data
+generating models. The model without cross-loadings (used for models 1 and 2)
+contains three latent variables (with variance equal to 1), each of which is
+indicated by three measured variables, with loadings equal to 0.7, and latent
+variable covariances of 0.3. The model with cross loadings is equivalent to the
+previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to
+y6, with loadings equal to 0.35.
 
 ```{r pop_model_1}
 #| cache: TRUE
@@ -299,10 +323,9 @@ semPaths(
   edge.color = "black",
   style = "lisrel",
   fixedStyle = c("black", 1)
-  )
+)
 
 ```
-
 
 ```{r pop_model_1}
 #| cache: TRUE
@@ -315,11 +338,9 @@ semPaths(
   edge.color = "black",
   style = "lisrel",
   fixedStyle = c("black", 1)
-  )
+)
 
 ```
-
-
 
 # Results
 
@@ -380,8 +401,9 @@ datasets of interest with a sample of N = 1,000,000 and combining all variables
 mean, standard deviation, median, skew and kurtosis statistics from the same
 dataset.
 
-These values are a match the correct values, showing that the data generating
-process we described is working as intended \[That's not well phrased. Fix.\]
+These values are a match the expected values, showing that the data generating
+process we described is working as intended at least as far as the distributions
+are concerned.
 
 ```{r dist_plots, echo = FALSE}
 #| cache: TRUE
@@ -513,6 +535,8 @@ if(!file.exists("chis_calculated.RData")) {
   cl <- snow::makeCluster(getOption("cl.cores", 14))
   snow::clusterExport(cl, "n_sims")
   snow::clusterSetupRNGstream (cl, seed=42) # set seed
+  # to use non-parallel processing, replace snow::clusterApply() below with 
+  # apply(), or purrr::map()
   res_100 <- snow::clusterApply(cl, 1:n_sims, function(x) {
     seed_count <- x
     source("functions.R")
@@ -591,7 +615,7 @@ df_cwf_table_4 <- read.csv("Curran_table_4.csv")
 ## Model Fit Comparison
 
 In this section we compare the model fit results we obtained with those
-presented in the CWF paper.
+presented in the CWF paper. In the results section we use compare the fit statistics graphically, but full tables of results are presented in the appendix. 
 
 ### Model 1: Correct Specification
 
@@ -1136,7 +1160,10 @@ df_table_2 <- df_table_2a %>%
 ```
 
 @fig-plot_chi_2 shows the mean chi-squares obtained in the CWF paper and the
-current simulation for model 2 (which had a misspecification of inclusion). These results are substantively equivalent to those for model 1: SB and ML are similar, ADF/WLS is larger in CWF, and the differences are larger with smaller sample sizes and greater deviation from normality.
+current simulation for model 2 (which had a misspecification of inclusion).
+These results are substantively equivalent to those for model 1: SB and ML are
+similar, ADF/WLS is larger in CWF, and the differences are larger with smaller
+sample sizes and greater deviation from normality.
 
 ```{r plot_table_2_chi, echo = FALSE}
 #| cache: TRUE
@@ -1162,8 +1189,9 @@ ggplot2::ggplot() +
 
 ```
 
-Differences in rejection rates for model 2 reflect those of model 1, as shown in 
-@fig-plot_rejects_2. Rejection rates were found to be higher in the CWF paper than in the current simulation, for small samples and deviation from normality.
+Differences in rejection rates for model 2 reflect those of model 1, as shown in
+@fig-plot_rejects_2. Rejection rates were found to be higher in the CWF paper
+than in the current simulation, for small samples and deviation from normality.
 
 ```{r plot_table_2_rejects, echo = FALSE}
 #| cache: TRUE
@@ -1188,14 +1216,6 @@ ggplot2::ggplot() +
 
 
 ```
-
-
-
-
-
-
-
-
 
 ### Model 3: Exclusion Misspecification
 
@@ -1434,7 +1454,12 @@ df_table_3 <- df_table_3a %>%
 ```
 
 @fig-plot_chi_3 shows the mean chi-squares obtained in the CWF paper and the
-current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes. 
+current simulation for model 3 (which had a misspecification of exclusion). Here
+we see larger differences between the current simulation and those presented in
+CWF. The CWF paper has larger average chi-squares than we found, but this
+difference is consistent for all three estimators, but larger for the ADF/WLS
+estimator than ML and SB. Unlike the previous models, the discrepancies are also
+larger in larger sample sizes.
 
 ```{r plot_table_3_chi, echo = FALSE}
 #| cache: TRUE
@@ -1460,8 +1485,11 @@ ggplot2::ggplot() +
 
 ```
 
-The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in
-@fig-plot_rejects_3. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large. 
+The differences in rejection rates for model 3 are consistent with the
+differences chi-square statistics, and can be seen in @fig-plot_rejects_3. At
+larger sample sizes the rejection rates essentially asymptote at 1, hence
+differences are not seen, but at smaller sample sizes the discrepancies between
+the models is large.
 
 ```{r plot_table_3_rejects, echo = FALSE}
 #| cache: TRUE
@@ -1486,11 +1514,6 @@ ggplot2::ggplot() +
 
 
 ```
-
-
-
-
-
 
 ### Model 4: Exclusion and Inclusion Misspecification
 
@@ -1729,7 +1752,12 @@ df_table_4 <- df_table_4a %>%
 ```
 
 @fig-plot_chi_3 shows the mean chi-squares obtained in the CWF paper and the
-current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes. 
+current simulation for model 3 (which had a misspecification of exclusion). Here
+we see larger differences between the current simulation and those presented in
+CWF. The CWF paper has larger average chi-squares than we found, but this
+difference is consistent for all three estimators, but larger for the ADF/WLS
+estimator than ML and SB. Unlike the previous models, the discrepancies are also
+larger in larger sample sizes.
 
 ```{r plot_table_4_chi, echo = FALSE}
 #| cache: TRUE
@@ -1755,8 +1783,11 @@ ggplot2::ggplot() +
 
 ```
 
-The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in
-@fig-plot_rejects_3. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large. 
+The differences in rejection rates for model 3 are consistent with the
+differences chi-square statistics, and can be seen in @fig-plot_rejects_3. At
+larger sample sizes the rejection rates essentially asymptote at 1, hence
+differences are not seen, but at smaller sample sizes the discrepancies between
+the models is large.
 
 ```{r plot_table_4_rejects, echo = FALSE}
 #| cache: TRUE
@@ -1783,11 +1814,22 @@ ggplot2::ggplot() +
 
 ## Expected Values of Chi-Square
 
-The Satorra-Saris [@satorra1985power] method can be used to calculate the expected value of chi-square, given ML estimation and normally distributed data. For models 1 and 2 this value is trivial to calculate, as the models are correctly specified (or when they are incorrect, the error is one of inclusion) hence the expected chi-square values are equal to the degrees of freedom in the model.  For models 3 and 4 we calculate the expected values of chi-square using the Satorra-Saris method (which is described in more detail in CWF). 
+The Satorra-Saris [@satorra1985power] method can be used to calculate the
+expected value of chi-square, given ML estimation and normally distributed data.
+For models 1 and 2 this value is trivial to calculate, as the models are
+correctly specified (or when they are incorrect, the error is one of inclusion)
+hence the expected chi-square values are equal to the degrees of freedom in the
+model. For models 3 and 4 we calculate the expected values of chi-square using
+the Satorra-Saris method (which is described in more detail in CWF).
 
-The expected values that we calculate are consistently lower than the expected values calculated by CWF. It appears that for each simulation (this one, and CWF), the expected values of chi-square are a closer match to the mean observed value. For example, for Model 3, sample size 100, the current study's calculated expected value of chi-square is 36.45 and the mean observed value is 36.84; for CWF, the expected value is 37.62 and the observed is 38.45. For model 4, sample size 1000, current study expected: 110.44, observed 111.37, for CWF the values are 128.20 and 128.71.
-
-
+The expected values that we calculate are consistently lower than the expected
+values calculated by CWF. It appears that for each simulation (this one, and
+CWF), the expected values of chi-square are a closer match to the mean observed
+value. For example, for Model 3, sample size 100, the current study's calculated
+expected value of chi-square is 36.45 and the mean observed value is 36.84; for
+CWF, the expected value is 37.62 and the observed is 38.45. For model 4, sample
+size 1000, current study expected: 110.44, observed 111.37, for CWF the values
+are 128.20 and 128.71.
 
 ```{r expected_chis_table, echo=FALSE}
 #| cache: TRUE
@@ -1816,12 +1858,23 @@ df_chis$`Model 4: CWF` <- c(
 knitr::kable(df_chis, digits = 2)
 ```
 
-One possible explanation for this discrepancy is that the error variances were misreported in Figure 1 of CWF. Figure 1 of CWF shows that each of the measured variables has a residual variance of 0.51 in both the model with and without the cross loadings. If this is the case, when the cross loading is added to the model, the variance of the item must increase. 
+One possible explanation for this discrepancy is that the error variances were
+misreported in Figure 1 of CWF. Figure 1 of CWF shows that each of the measured
+variables has a residual variance of 0.51 in both the model with and without the
+cross loadings. If this is the case, when the cross loading is added to the
+model, the variance of the item must increase.
 
-The CFA model presented in Figure 1 of the paper suggests that in the population models without cross loadings, the variance of all items is 1.00, but in the models with cross loadings, the variance of items 6 and 7 increases to 1.269, while all of the other items have variances equal to 1. 
+The CFA model presented in Figure 1 of the paper suggests that in the population
+models without cross loadings, the variance of all items is 1.00, but in the
+models with cross loadings, the variance of items 6 and 7 increases to 1.269,
+while all of the other items have variances equal to 1.
 
-To test this hypothesis, we modified the population model so that the residual variances of items 6 and 7 were not 0.51 in the population model, but were 0.25. This change meant that the implied variances of all of the items was 1.00.  The path diagram, drawn from the model, is shown in @fig-pop_model_new, and the calculated expected values of chi-square from the modified model alongside the values presented in CWF are shown in @tbl-expected_chis_modified.
-
+To test this hypothesis, we modified the population model so that the residual
+variances of items 6 and 7 were not 0.51 in the population model, but were 0.25.
+This change meant that the implied variances of all of the items was 1.00. The
+path diagram, drawn from the model, is shown in @fig-pop_model_new, and the
+calculated expected values of chi-square from the modified model alongside the
+values presented in CWF are shown in @tbl-expected_chis_modified.
 
 ```{r new_pop_models, echo = FALSE}
 #|cache: TRUE
@@ -1854,8 +1907,6 @@ new_dgp_model_cross_loadings <- '
   '
 ```
 
-
-
 ```{r new_models, echo=FALSE}
 #| cache: TRUE
 #| label: fig-pop_model_new
@@ -1876,7 +1927,7 @@ semPaths(
   edge.color = "black",
   style = "lisrel",
   fixedStyle = c("black", 1)
-  )
+)
 
 ```
 
@@ -1936,22 +1987,263 @@ knitr::kable(df_chis_new, digits = 2)
 
 ```
 
+
+We count a simulation as a proper solution the lavaan::cfa() function reports that the model converged, and if the solution is proper - i.e. all residual variances are positive (no Heywood cases). The CWF paper reports that 
+90% of the replications were proper for ML and 83% were proper for ADF.
+
+@tbl-convergence_percs shows the percentage of models for each cell of the 
+simulation that converged on a proper solution. Unsurprisingly, convergence as associated with sample size (smaller samples led to less convergence) estimator (ADF was less likely to converge than ML) and degree of departure from non-normality. The severely non-normal, ADF estimator with N = 100 converged in only 57.5% of simulations. 
+
+@tbl-convergence_percs_summary shows the mean convergence for each estimator. The convergence rates achieved in this simulation were higher than those reported by CWF. 
+
+```{r convergence, echo = FALSE}
+#| label: tbl-convergence_percs
+#| tbl-cap: "Percentage of models in each cell that converged"
+df_convergence_res <- df_table_1 %>%
+  dplyr::mutate(model = 1) %>%
+  dplyr::bind_rows(
+    df_table_2 %>%
+      dplyr::mutate(model = 2) 
+  ) %>%
+  dplyr::bind_rows(
+    df_table_3 %>%
+      dplyr::mutate(model = 3) 
+  ) %>%
+  dplyr::bind_rows(
+    df_table_4 %>%
+      dplyr::mutate(model = 4) 
+  ) %>%
+  dplyr::select(
+    model, estimator, distribution, perc_converged, size
+  ) %>%
+  dplyr::mutate(perc_converged = perc_converged / 10) %>%
+  dplyr::filter(!is.na(perc_converged)) %>%
+  tidyr::pivot_wider(
+    values_from = "perc_converged",
+    names_from = c("estimator"),
+    id_cols = c("model", "distribution", "size")
+  ) %>% 
+  dplyr::select(-SB) %>% 
+  dplyr::arrange(size)
+
+knitr::kable(df_convergence_res)
+
+
+```
+
+```{r mean_convergence}
+#| cache: TRUE
+#| label: tbl-convergence_percs_summary
+#| tbl-cap: "Percentage of models using each estimator that converged"
+mean_convergence <- df_convergence_res %>%
+  dplyr::summarise(
+    mean_ml = mean(ML),
+    mean_adf = mean(ADF)
+  ) %>%
+  t() %>%
+  as.data.frame() %>%
+  purrr::set_names(c("Percent Proper")) 
+rownames(mean_convergence) = c("ML", "ADF")
+knitr::kable(mean_convergence, digits = 1)
+```
+
 # Discussion
 
-In this paper we replicated, as precisely as possible, a simulation study originally presented by @curran1996robustness. Where the data generation and analysis was done using EQS 3.0, we used the R packages simsem and Lavaan. 
+In this paper we replicated, as precisely as possible, a simulation study
+originally presented by @curran1996robustness. Where the data generation and
+analysis was done using EQS 3.0, we used the R packages simsem and Lavaan.
 
-Overall, our results were substantively similar and the conclusions about the appropriateness of the different estimators would not have been altered by the differences between our results.
+Overall, our results were substantively similar and the conclusions about the
+appropriateness of the different estimators would not have been altered by the
+differences between our results.
 
-However, there were consistent differences between the results, which were intriguing. The chi-square values obtained in the original paper were consistently higher than the results that we obtained, for almost all estimators at all sample sizes. When we compared the expected chi-squares, which are calculation based, not simulation based, these differences remained - the expected chi-square values of Curran, et al, were similar to the obtained chi-square values that they found via simulation. The expected chi-square values that we calculated were more similar to the obtained chi-square values that we found via simulation.
+One difference that stands out is the performance of the ADF/WLS estimator in
+smaller samples. The simulations run in Lavaan have lower chi-squares and lower
+rejection rates than the simulations run in the CWF paper. These differences
+increase as the distributions deviate further from normality. With model 1
+(correct model), normal distribution and N = 100, the mean observed ADF/WLS
+chi-square is 32.9 in the current simulation, and 36.4 in the CWF paper, but for
+the severely non-normal data, the values are 29.2 and 44.8. However, with a
+sample size of 1000, the values for normal are 24.8 (current) and 25.8 (CWF);
+for severely non-normal 25.1 (current) and 25.5 (CWF). The ML and SB estimators
+of these models were very similar.  It is possible that difference in convergence rates might have resulted in these differences - if the ADF/WLS models with higher chi-square statistics failed to converge in Lavaan, but did converge in EQS, the resulting sample bias could skew these statistics. Altering the tolerance for convergence might reduce or eliminate these differences.
 
-We believe that this difference may be due to an error in the presentation in a figure in the table. Residual variances were possibly erroneously reported as being equal in all models, where in models with cross loadings, these residual variances may have been reduced. The change in residual variance is easy to overlook as this is not a part of the model that one is generally particularly interested in, and we rarely make or test hypotheses about the estimates of residual variances. 
+A second difference between the results was also intriguing. The chi-square
+values obtained in the original paper were consistently higher than the results
+that we obtained, for almost all estimators at all sample sizes - even for the
+correctly specified models. When we compared the expected chi-squares, which are
+calculation based, not simulation based, these differences remained - the
+expected chi-square values of Curran, et al, were similar to the obtained
+chi-square values that they found via simulation. The expected chi-square values
+that we calculated were more similar to the obtained chi-square values that we
+found via simulation.
 
-However, this exercise leads us to some conclusions. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information. 
+We believe that this difference may be due to an inconsistency in the
+presentation in a figure in the table. Residual variances were possibly
+erroneously reported as being equal in all models, where in models with
+cross-loadings these residual variances may have been reduced. The change in
+residual variance is easy to overlook as this is not a part of the model that
+one is generally particularly interested in, and we rarely make or test
+hypotheses about the estimates of residual variances.
 
-In this paper we have used the semPlot package [@EpskampSemPlot] to draw path diagrams based on the models that we fitted. Although we believe that we can draw path diagrams that are more esthetically pleasing using other programs, the use of semPlot (or similar software) which takes the fitted model as input and draws output ensures that the path diagram matches the models. 
+However, this exercise leads to some more general conclusions, not specifically
+regarding this paper. Presenting a simulation study in sufficient detail in a
+conventional journal article that it can be replicated precisely is
+challenging - if authors do not share the code, it can be difficult for others
+to replicate and thereby confirm (or at least support) the results. Sharing code
+was not straightforward in 1996, but now we have websites like Github, which
+support sharing of code, and osf.io, which support sharing of code and other
+information.
 
-Finally, the experience of carrying out this work has shown that, for us at least, it is very difficult to fully evaluate a simulation study by reading it, and not replicating it. The authors of CWF acknowledge both Peter Bentler and Douglas Bonett - SEM practitioners and researchers that one would generally defer to, but it appears that neither of these researchers noted the omission of the change in the residual variances. In addition, if any of the 7000+ authors who have cited this paper have made this connection, it has not been brought to our attention. 
+In this paper we have used the semPlot package [@EpskampSemPlot] to draw path
+diagrams based on the models that we fitted. Although we believe that we can
+draw path diagrams that are more esthetically pleasing using other programs, the
+use of semPlot (or similar software) which takes the fitted model as input and
+draws output ensures that the path diagram matches the models.
+
+The cost in both time and hardware of running simulations has been dramatically
+reduced, thanks to Moore's law. The original simulation was run on a 386
+computer with a 20MB hard drive. Curran (personal communication) says that the
+simulations took 'days and days' and had several tweaks to try to speed them up.
+The simulations in the current paper were run on a 3 year old consumer PC that
+is primarily used to play Civilization and online Chess. We ran five times more
+simulations (1000 vs 200), and the whole analysis took approximately an hour to
+run, Rstudio saves a cache file that is 80MB (or 4x more than the computer these
+were originally run on), and it requires about 15GB of RAM. We could write more
+efficient code and reduce these dramatically (an earlier version used around
+50GB of RAM and saved an 8 GB file), but our attention spans are limited, and
+hardware is cheap (essentially free, we can continue to play chess while the
+simulations run). If our time were even more valuable, we could rent a computer
+from a cloud provider, and a cost of around \$6 per hour, increase the speed by
+a factor of approximately 15. Our more serious point is that the hurdles that
+must be overcome to do this work are dramatically reduced, and the benefits are
+potentially high.
+
+Finally, the experience of carrying out this work has shown that, for us at
+least, it is very difficult to fully evaluate a simulation study by reading it,
+and not replicating it. The authors of CWF acknowledge both Peter Bentler and
+Douglas Bonett - SEM practitioners and researchers that one would generally
+defer to, but it appears that neither of these researchers noted the omission of
+the change in the residual variances. In addition, if any of the 7000+ authors
+who have cited this paper have made this connection, it has not been brought to
+our attention.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+# Appendix {.unnumbered}
+
+```{r appendix_table_1}
+#| label: tbl-table_1_all_results
+#| tbl-cap: "Complete results of CWF and current study for Model 1 (correct model)"
+df_table_1 %>%
+  dplyr::mutate(
+    distribution = ifelse(
+      distribution == "a: Normal", "Normal", distribution
+    ),
+    distribution = ifelse(
+      distribution == "b: Moderately non-normal", "Moderate", distribution
+    ),
+    distribution = ifelse(
+      distribution == "c: Severely non-normal", "Severe", distribution
+    )
+  ) %>%
+  knitr::kable(
+    digits = 2, 
+    col.names = c(
+      "Sample Size", "Estimator", 
+      "Mean <br>Observed <br>Chi Square", 
+      "Proportion <br>Rejected<br>(p<0.05)",
+      "N Proper Solutions",
+      "Source", "Distribution"
+    )
+  )
+```
+
+
+```{r appendix_table_2}
+#| label: tbl-table_2_all_results
+#| tbl-cap: "Complete results of CWF and current study for Model 2 (inclusion misspecification)"
+df_table_2 %>%
+  dplyr::mutate(
+    distribution = ifelse(
+      distribution == "a: Normal", "Normal", distribution
+    ),
+    distribution = ifelse(
+      distribution == "b: Moderately non-normal", "Moderate", distribution
+    ),
+    distribution = ifelse(
+      distribution == "c: Severely non-normal", "Severe", distribution
+    )
+  ) %>%
+  knitr::kable(
+    digits = 2, 
+    col.names = c(
+      "Sample Size", "Estimator", 
+      "Mean <br>Observed <br>Chi Square", 
+      "Proportion <br>Rejected<br>(p<0.05)",
+      "N Proper Solutions",
+      "Source", "Distribution"
+    )
+  )
+```
 
 
 
-# References
+```{r appendix_table_3}
+#| label: tbl-table_3_all_results
+#| tbl-cap: "Complete results of CWF and current study for Model 3 (exclusion misspecification)"
+df_table_3 %>%
+  dplyr::mutate(
+    distribution = ifelse(
+      distribution == "a: Normal", "Normal", distribution
+    ),
+    distribution = ifelse(
+      distribution == "b: Moderately non-normal", "Moderate", distribution
+    ),
+    distribution = ifelse(
+      distribution == "c: Severely non-normal", "Severe", distribution
+    )
+  ) %>%
+  knitr::kable(
+    digits = 2, 
+    col.names = c(
+      "Sample Size", "Estimator", 
+      "Mean <br>Observed <br>Chi Square", 
+      "Proportion <br>Rejected<br>(p<0.05)",
+      "N Proper Solutions",
+      "Source", "Distribution"
+    )
+  )
+```
+
+
+
+```{r appendix_table_4}
+#| label: tbl-table_4_all_results
+#| tbl-cap: "Complete results of CWF and current study for Model 4 (inclusion + exclusion misspecification)"
+df_table_4 %>%
+  dplyr::mutate(
+    distribution = ifelse(
+      distribution == "a: Normal", "Normal", distribution
+    ),
+    distribution = ifelse(
+      distribution == "b: Moderately non-normal", "Moderate", distribution
+    ),
+    distribution = ifelse(
+      distribution == "c: Severely non-normal", "Severe", distribution
+    )
+  ) %>%
+  knitr::kable(
+    digits = 2, 
+    col.names = c(
+      "Sample Size", "Estimator", 
+      "Mean <br>Observed <br>Chi Square", 
+      "Proportion <br>Rejected<br>(p<0.05)",
+      "N Proper Solutions",
+      "Source", "Distribution"
+    )
+  )
+```

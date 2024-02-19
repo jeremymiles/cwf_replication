@@ -6,6 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jeremy Miles1">
+<meta name="author" content="Alexander Miles2">
+<meta name="author" content="Mark Shevlin3">
 
 <title>The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication</title>
 <style>
@@ -71,6 +74,14 @@ div.csl-indent {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Authors</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jeremy Miles<sup>1</sup> </p>
+             <p>Alexander Miles<sup>2</sup> </p>
+             <p>Mark Shevlin<sup>3</sup> </p>
+          </div>
+  </div>
     
   
     
@@ -79,12 +90,12 @@ div.csl-indent {
 
 </header>
 
-<p>Authors:</p>
-<p>Jeremy Miles (Google, Los Angeles, USA)</p>
-<p>Alexander Miles (University of Southern California, USA)</p>
-<p>Mark Shevlin (University of Ulster, UK)</p>
-<section id="background" class="level1">
-<h1>Background</h1>
+<p><sup>1</sup>Google, Los Angeles, USA and University of Southern California, USA; jeremy.miles@gmail.com</p>
+<p><sup>2</sup>University of Southern California, USA; alex@milesfamily.name</p>
+<p><sup>3</sup>University of Ulster, UK; m.shevlin@ulster.ac.uk</p>
+<p>There have been recent calls for researchers in social science methodological research to consider replication as an This paper reports on a replication of <span class="citation" data-cites="curran1996robustness">Curran, West, &amp; Finch (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span>, using more recently developed, open source software (the simsem and Lavaan packages in R). The results that we obtain are substantively equivalent to the results obtained in the original paper, but some minor discrepancies were found, and we discuss the possible reasons. We conclude with an argument that replication of simulation studies can be useful and informative, and thanks to the rise of open source analysis software, websites that increase ability to share code and improvements in computer hardware, the costs of replication are dramatically reduced.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>The replication crisis has provoked a great deal of soul searching in many branches of science, including psychology. However, methodologists have recently pointed out that concerns about the replication crisis have largely passed by the methodological community <span class="citation" data-cites="Schoenbrodt2023Reproducibility Strobl2023owls">(<a href="#ref-Schoenbrodt2023Reproducibility" role="doc-biblioref">Schoenbrodt, 2023</a>; <a href="#ref-Strobl2023owls" role="doc-biblioref">Strobl, 2023</a>)</span>. A widely used tool of methodological researchers is that of the simulation study - set up a population with a known data generating process (DGP), take a sample of specified size from that population, apply a statistical method and determine if the data generating process is discovered <span class="citation" data-cites="carsey2013monte">(<a href="#ref-carsey2013monte" role="doc-biblioref">Carsey &amp; Harden, 2013</a>)</span>. There is no opportunity for p-hacking (in its many forms), we run the analysis and report the results. If we run the analysis again, we get the same results. It is perfectly replicable - no need for replication, no replication crisis.</p>
 <p><span class="citation" data-cites="lohmann2022s">Lohmann, Astivia, Morris, &amp; Groenwold (<a href="#ref-lohmann2022s" role="doc-biblioref">2022</a>)</span> suggested that methodological researchers present 10 reasons that we should consider replicating simulation studies.</p>
 <ol type="1">
@@ -101,7 +112,7 @@ div.csl-indent {
 </ol>
 <p>To their list, we add one more. Replications are frequently software dependent. If we find differences across software implementations, we do not need to suggest that the authors of (complex) statistical analysis software have made errors. Optimization algorithms improve, random number generators differ, default convergence criteria might change.</p>
 <p>The replication crisis has made the importance of openness of code and data more relevant, but the internet has made openness possible. Researchers can now publish their code in Github, for (relative) immortality. Readers of a certain age will remember the ‘Computer Program Exchange’ in the journal Applied Psychological Measurement, an example of which was <span class="citation" data-cites="whittaker2003irtgen">Whittaker, Fitzpatrick, Williams, &amp; Dodd (<a href="#ref-whittaker2003irtgen" role="doc-biblioref">2003</a>)</span>, which says (in part): “. Send a DOS-formatted 3.5-inch diskette and a self-addressed, stamped disk mailer to …”. I do not have a DOS formatted diskette, I do not have a computer that can read it, and (now I think about it) , I don’t know what a disk-mailer is, and the truth is, I can’t remember the last time I used a stamp.</p>
-<p>In this paper we present the results of a replication of a simulation study. In 1996 the first edition of the new journal Psychological Methods contained a paper ‘The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis’ <span class="citation" data-cites="curran1996robustness">Curran, West, &amp; Finch (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span> - we refer to this paper as CWF throughout. In the 27 years since its publication, the study has been cited 7220 times (according to Google Scholar) and continues to be cited in contemporary texts, e.g. <span class="citation" data-cites="kline2023principles">Kline (<a href="#ref-kline2023principles" role="doc-biblioref">2023</a>)</span>. The authors generated data and analyzed it using EQS version 3.0, which was released in 1989. This was (and is) a closed source program - the current version is 7.0. The authors of CWF did not publish their code at the time - this was not frequently done, and was not straightforward.</p>
+<p>In this paper we present the results of a replication of a simulation study. In 1996 the first edition of the new journal Psychological Methods contained a paper ‘The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis’ <span class="citation" data-cites="curran1996robustness">Curran et al. (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span> - we refer to this paper as CWF throughout. In the 27 years since its publication, the study has been cited 7220 times (according to Google Scholar) and continues to be cited in contemporary texts, e.g. <span class="citation" data-cites="kline2023principles">Kline (<a href="#ref-kline2023principles" role="doc-biblioref">2023</a>)</span>. The authors generated data and analyzed it using EQS version 3.0, which was released in 1989. This was (and is) a closed source program - the current version is 7.0. The authors of CWF did not publish their code at the time - this was not frequently done, and was not straightforward.</p>
 <p>We have not requested the code from the authors of CWF. We would be unable to locate code that we (presumably) wrote around 1995 - almost 30 years from the time of writing. Even if we did have their code, we are not aware of any researcher who has EQS version 3.0 available. The latest version of EQS is 7.0 - we also don’t have this, and when we went to the website to determine how much it would cost, the website said that we needed to make an enquiry. On the grounds that if we need to ask, we can’t afford it, we didn’t ask. (Our total funding for this project is $0).</p>
 <p>Instead of using EQS we used open source software: data were generated using the R package simsem <span class="citation" data-cites="simsem">Pornprasertmanit, Miller, Schoemann, &amp; Jorgensen (<a href="#ref-simsem" role="doc-biblioref">2021</a>)</span> and lavaan <span class="citation" data-cites="lavaan">Rosseel (<a href="#ref-lavaan" role="doc-biblioref">2012</a>)</span>. The code is available on Github (https://github.com/jeremymiles/cwf_replication)</p>
 <p>The aim of this paper is to, as closely as possible, replicate the analysis carried out in the CWF paper, and determine the extent to which the results are replicable with more recently developed software.</p>
@@ -119,8 +130,8 @@ div.csl-indent {
 <p>The authors used 200 replications for each model. Given increases in speed of computers in the 27 years since the publication of this paper, we used 1000 replications.</p>
 <p>Each model was estimated using maximum likelihood, and an unscaled (ML) and Satorra-Bentler scaled (SB) chi-square statistic was calculated, and the model was also estimated using a WLS / ADF algorithm.</p>
 <p>Data were generated using simsem 0.5-16 and models estimated using lavaan 0.6-17, running on R v4.3.2. (All dependencies were the latest versions published on 2024-02-17.)</p>
-<p><a href="#fig-pop_model_1">Figure&nbsp;1</a> and <span class="citation" data-cites="fig_pop_model_2">(<a href="#ref-fig_pop_model_2" role="doc-biblioref"><strong>fig_pop_model_2?</strong></a>)</span> show the population parameters of the data generating models. The model without cross-loadings (used for models 1 and 2) contains three latent variables (with variance equal to 1), each of which is indicated by three measured variables, with loadings equal to 0.7, and latent variable covariances of 0.3. The model with cross loadings is equivalent to the previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to y6, with loadings equal to 0.35.</p>
-<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_1_c08af2e83ecb1d0292e6d2009205c81f">
+<p><a href="#fig-pop_model_1">Figure&nbsp;1</a> and <a href="#fig-pop_model_2">Figure&nbsp;2</a> show the population parameters of the data generating models. The model without cross-loadings (used for models 1 and 2) contains three latent variables (with variance equal to 1), each of which is indicated by three measured variables, with loadings equal to 0.7, and latent variable covariances of 0.3. The model with cross loadings is equivalent to the previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to y6, with loadings equal to 0.35.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_1_bb213a882a82b59e134e39a3fb9068c1">
 <div class="cell-output-display">
 <div id="fig-pop_model_1" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -130,7 +141,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_2_a382452c24bdf46620044420752d8468">
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_2_6f3a2337e3420c0362059667773c6098">
 <div class="cell-output-display">
 <div id="fig-pop_model_2" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -150,7 +161,7 @@ div.csl-indent {
 <p>First, we test the data generation process to ensure that the data match the models we believe we are testing.</p>
 <p>To examine the deviation from normality, we generated three datasets of size 1,000,000 for each of the three distributions (normal, moderately non-normal, severely non-normal).</p>
 <p><a href="#fig-dist_plot">Figure&nbsp;3</a> shows the empirical distribution found from generating all 3 datasets of interest with a sample of N = 1,000,000 and combining all variables (so that each distribution is a sample of 9,000,000). <a href="#tbl-skew_stats">Table&nbsp;1</a> shows the mean, standard deviation, median, skew and kurtosis statistics from the same dataset.</p>
-<p>These values are a match the correct values, showing that the data generating process we described is working as intended [That’s not well phrased. Fix.]</p>
+<p>These values are a match the expected values, showing that the data generating process we described is working as intended at least as far as the distributions are concerned.</p>
 <div class="cell" data-hash="cwf_replication_cache/html/fig-dist_plot_b6a62a48c6da6a71b51fe2cc892cdf67">
 <div class="cell-output-display">
 <div id="fig-dist_plot" class="quarto-figure quarto-figure-center anchored">
@@ -1013,7 +1024,7 @@ div.csl-indent {
 </section>
 <section id="model-fit-comparison" class="level2">
 <h2 class="anchored" data-anchor-id="model-fit-comparison">Model Fit Comparison</h2>
-<p>In this section we compare the model fit results we obtained with those presented in the CWF paper.</p>
+<p>In this section we compare the model fit results we obtained with those presented in the CWF paper. In the results section we use compare the fit statistics graphically, but full tables of results are presented in the appendix.</p>
 <section id="model-1-correct-specification" class="level3">
 <h3 class="anchored" data-anchor-id="model-1-correct-specification">Model 1: Correct Specification</h3>
 <p><a href="#fig-plot_chi_1">Figure&nbsp;4</a> shows the mean chi-squares obtained in the CWF paper and the current simulation. The values for the ML and SB chi-squares are very similar. However the ADF/WLS estimates are discrepant, and the discrepancy is larger with smaller sample sizes and greater departure from normality. At sample sizes 500 and above the chi-square differences are all around 1 point or less, but at smaller sample sizes, the differences increase. In the sample size of 100, when the distribution is normal, the difference in chi-squares is 3.6, with moderately non-normal it is 7.2 and severely non-normal the difference increases to 15.6. the</p>
@@ -1177,7 +1188,7 @@ div.csl-indent {
 <p>One possible explanation for this discrepancy is that the error variances were misreported in Figure 1 of CWF. Figure 1 of CWF shows that each of the measured variables has a residual variance of 0.51 in both the model with and without the cross loadings. If this is the case, when the cross loading is added to the model, the variance of the item must increase.</p>
 <p>The CFA model presented in Figure 1 of the paper suggests that in the population models without cross loadings, the variance of all items is 1.00, but in the models with cross loadings, the variance of items 6 and 7 increases to 1.269, while all of the other items have variances equal to 1.</p>
 <p>To test this hypothesis, we modified the population model so that the residual variances of items 6 and 7 were not 0.51 in the population model, but were 0.25. This change meant that the implied variances of all of the items was 1.00. The path diagram, drawn from the model, is shown in <a href="#fig-pop_model_new">Figure&nbsp;12</a>, and the calculated expected values of chi-square from the modified model alongside the values presented in CWF are shown in <a href="#tbl-expected_chis_modified">Table&nbsp;9</a>.</p>
-<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_new_059851716eb8c1717422c6b74022edba">
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_new_a3b309621759dd77b9bf6d14bb857a49">
 <div class="cell-output-display">
 <div id="fig-pop_model_new" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
@@ -1242,24 +1253,407 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<p>We count a simulation as a proper solution the lavaan::cfa() function reports that the model converged, and if the solution is proper - i.e.&nbsp;all residual variances are positive (no Heywood cases). The CWF paper reports that 90% of the replications were proper for ML and 83% were proper for ADF.</p>
+<p><a href="#tbl-convergence_percs">Table&nbsp;10</a> shows the percentage of models for each cell of the simulation that converged on a proper solution. Unsurprisingly, convergence as associated with sample size (smaller samples led to less convergence) estimator (ADF was less likely to converge than ML) and degree of departure from non-normality. The severely non-normal, ADF estimator with N = 100 converged in only 57.5% of simulations.</p>
+<p><a href="#tbl-convergence_percs_summary">Table&nbsp;11</a> shows the mean convergence for each estimator. The convergence rates achieved in this simulation were higher than those reported by CWF.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-convergence_percs" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;10: Percentage of models in each cell that converged</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">model</th>
+<th style="text-align: left;">distribution</th>
+<th style="text-align: right;">size</th>
+<th style="text-align: right;">ML</th>
+<th style="text-align: right;">ADF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.9</td>
+<td style="text-align: right;">94.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">98.7</td>
+<td style="text-align: right;">87.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">93.6</td>
+<td style="text-align: right;">79.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">99.6</td>
+<td style="text-align: right;">93.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">96.8</td>
+<td style="text-align: right;">86.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">89.5</td>
+<td style="text-align: right;">76.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">94.7</td>
+<td style="text-align: right;">87.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">91.3</td>
+<td style="text-align: right;">78.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">85.4</td>
+<td style="text-align: right;">63.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">94.5</td>
+<td style="text-align: right;">81.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">86.7</td>
+<td style="text-align: right;">73.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">86.7</td>
+<td style="text-align: right;">57.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">99.8</td>
+<td style="text-align: right;">96.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">99.8</td>
+<td style="text-align: right;">95.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">99.8</td>
+<td style="text-align: right;">99.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">99.3</td>
+<td style="text-align: right;">93.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">96.9</td>
+<td style="text-align: right;">82.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">99.9</td>
+<td style="text-align: right;">98.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">98.3</td>
+<td style="text-align: right;">91.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">98.3</td>
+<td style="text-align: right;">79.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">98.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">99.8</td>
+<td style="text-align: right;">91.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">97.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">93.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">96.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">a: Normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">100.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">b: Moderately non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">99.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">c: Severely non-normal</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">100.0</td>
+<td style="text-align: right;">97.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-convergence_percs_summary_2cfb05af81f8348a7f3a00f52b43959b">
+<div class="cell-output-display">
+<div id="tbl-convergence_percs_summary" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;11: Percentage of models using each estimator that converged</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Percent Proper</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">98.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">93.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
 <p>In this paper we replicated, as precisely as possible, a simulation study originally presented by <span class="citation" data-cites="curran1996robustness">Curran et al. (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span>. Where the data generation and analysis was done using EQS 3.0, we used the R packages simsem and Lavaan.</p>
 <p>Overall, our results were substantively similar and the conclusions about the appropriateness of the different estimators would not have been altered by the differences between our results.</p>
-<p>However, there were consistent differences between the results, which were intriguing. The chi-square values obtained in the original paper were consistently higher than the results that we obtained, for almost all estimators at all sample sizes. When we compared the expected chi-squares, which are calculation based, not simulation based, these differences remained - the expected chi-square values of Curran, et al, were similar to the obtained chi-square values that they found via simulation. The expected chi-square values that we calculated were more similar to the obtained chi-square values that we found via simulation.</p>
-<p>We believe that this difference may be due to an error in the presentation in a figure in the table. Residual variances were possibly erroneously reported as being equal in all models, where in models with cross loadings, these residual variances may have been reduced. The change in residual variance is easy to overlook as this is not a part of the model that one is generally particularly interested in, and we rarely make or test hypotheses about the estimates of residual variances.</p>
-<p>However, this exercise leads us to some conclusions. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information.</p>
+<p>One difference that stands out is the performance of the ADF/WLS estimator in smaller samples. The simulations run in Lavaan have lower chi-squares and lower rejection rates than the simulations run in the CWF paper. These differences increase as the distributions deviate further from normality. With model 1 (correct model), normal distribution and N = 100, the mean observed ADF/WLS chi-square is 32.9 in the current simulation, and 36.4 in the CWF paper, but for the severely non-normal data, the values are 29.2 and 44.8. However, with a sample size of 1000, the values for normal are 24.8 (current) and 25.8 (CWF); for severely non-normal 25.1 (current) and 25.5 (CWF). The ML and SB estimators of these models were very similar. It is possible that difference in convergence rates might have resulted in these differences - if the ADF/WLS models with higher chi-square statistics failed to converge in Lavaan, but did converge in EQS, the resulting sample bias could skew these statistics. Altering the tolerance for convergence might reduce or eliminate these differences.</p>
+<p>A second difference between the results was also intriguing. The chi-square values obtained in the original paper were consistently higher than the results that we obtained, for almost all estimators at all sample sizes - even for the correctly specified models. When we compared the expected chi-squares, which are calculation based, not simulation based, these differences remained - the expected chi-square values of Curran, et al, were similar to the obtained chi-square values that they found via simulation. The expected chi-square values that we calculated were more similar to the obtained chi-square values that we found via simulation.</p>
+<p>We believe that this difference may be due to an inconsistency in the presentation in a figure in the table. Residual variances were possibly erroneously reported as being equal in all models, where in models with cross-loadings these residual variances may have been reduced. The change in residual variance is easy to overlook as this is not a part of the model that one is generally particularly interested in, and we rarely make or test hypotheses about the estimates of residual variances.</p>
+<p>However, this exercise leads to some more general conclusions, not specifically regarding this paper. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information.</p>
 <p>In this paper we have used the semPlot package <span class="citation" data-cites="EpskampSemPlot">(<a href="#ref-EpskampSemPlot" role="doc-biblioref">Epskamp, 2022</a>)</span> to draw path diagrams based on the models that we fitted. Although we believe that we can draw path diagrams that are more esthetically pleasing using other programs, the use of semPlot (or similar software) which takes the fitted model as input and draws output ensures that the path diagram matches the models.</p>
+<p>The cost in both time and hardware of running simulations has been dramatically reduced, thanks to Moore’s law. The original simulation was run on a 386 computer with a 20MB hard drive. Curran (personal communication) says that the simulations took ‘days and days’ and had several tweaks to try to speed them up. The simulations in the current paper were run on a 3 year old consumer PC that is primarily used to play Civilization and online Chess. We ran five times more simulations (1000 vs 200), and the whole analysis took approximately an hour to run, Rstudio saves a cache file that is 80MB (or 4x more than the computer these were originally run on), and it requires about 15GB of RAM. We could write more efficient code and reduce these dramatically (an earlier version used around 50GB of RAM and saved an 8 GB file), but our attention spans are limited, and hardware is cheap (essentially free, we can continue to play chess while the simulations run). If our time were even more valuable, we could rent a computer from a cloud provider, and a cost of around $6 per hour, increase the speed by a factor of approximately 15. Our more serious point is that the hurdles that must be overcome to do this work are dramatically reduced, and the benefits are potentially high.</p>
 <p>Finally, the experience of carrying out this work has shown that, for us at least, it is very difficult to fully evaluate a simulation study by reading it, and not replicating it. The authors of CWF acknowledge both Peter Bentler and Douglas Bonett - SEM practitioners and researchers that one would generally defer to, but it appears that neither of these researchers noted the omission of the change in the residual variances. In addition, if any of the 7000+ authors who have cited this paper have made this connection, it has not been brought to our attention.</p>
 </section>
 <section id="references" class="level1 unnumbered">
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
 <div id="ref-carsey2013monte" class="csl-entry" role="listitem">
 Carsey, T. M., &amp; Harden, J. J. (2013). <em>Monte carlo simulation and resampling methods for social science</em>. Sage Publications.
 </div>
@@ -1302,7 +1696,2729 @@ Strobl, C. (2023). Bringing owls to athens: Some thoughts on what makes a good s
 <div id="ref-whittaker2003irtgen" class="csl-entry" role="listitem">
 Whittaker, T. A., Fitzpatrick, S. J., Williams, N. J., &amp; Dodd, B. G. (2003). IRTGEN: A SAS macro program to generate known trait scores and item responses for commonly used item response theory models. <em>Applied Psychological Measurement</em>, <em>27</em>(4), 299–300.
 </div>
-</div></section></div></main>
+</div>
+</section>
+<section id="appendix" class="level1 unnumbered">
+<h1 class="unnumbered">Appendix</h1>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-table_1_all_results" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;12: Complete results of CWF and current study for Model 1 (correct model)</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Sample Size</th>
+<th style="text-align: left;">Estimator</th>
+<th style="text-align: right;">Mean <br>Observed <br>Chi Square</th>
+<th style="text-align: right;">Proportion <br>Rejected<br>(p&lt;0.05)</th>
+<th style="text-align: right;">N Proper Solutions</th>
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">25.49</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.72</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">32.88</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">942</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">24.61</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.77</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">28.53</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">24.49</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.56</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.93</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">24.06</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.11</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">24.82</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">25.01</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.87</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">36.44</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">24.78</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.22</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">29.19</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">23.94</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.10</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.92</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">25.05</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.16</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.79</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.09</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">987</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">26.13</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">987</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">30.87</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">872</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.30</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.44</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">27.93</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">996</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.13</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.74</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.83</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">29.98</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.37</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.04</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">29.35</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">26.06</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">38.04</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.15</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.44</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">29.27</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">31.26</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.44</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">26.42</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.78</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.77</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.36</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">33.14</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">936</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">26.90</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">936</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">29.24</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">791</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">33.88</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.62</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">26.80</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">968</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">35.92</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.18</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.70</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">36.96</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.83</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.12</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">33.54</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">27.26</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">44.82</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">34.40</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.80</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">31.29</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">35.55</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.85</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">26.83</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">37.40</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.01</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.47</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-table_2_all_results" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;13: Complete results of CWF and current study for Model 2 (inclusion misspecification)</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Sample Size</th>
+<th style="text-align: left;">Estimator</th>
+<th style="text-align: right;">Mean <br>Observed <br>Chi Square</th>
+<th style="text-align: right;">Proportion <br>Rejected<br>(p&lt;0.05)</th>
+<th style="text-align: right;">N Proper Solutions</th>
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">23.35</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">996</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.56</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">996</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">28.87</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">937</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">22.59</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.73</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.65</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">22.40</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.46</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.61</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">22.03</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.07</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">22.63</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">23.42</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.19</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">31.00</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">22.48</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.86</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">26.43</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">21.89</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.02</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.13</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">22.25</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.31</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">22.09</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">27.39</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">968</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.91</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">968</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">27.18</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">860</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">27.71</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.31</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.11</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">994</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">27.50</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.64</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.44</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">27.61</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.49</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">22.97</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">26.89</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.80</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">34.95</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">27.70</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.75</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">26.06</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">26.68</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">21.90</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.04</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">26.05</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">21.14</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.32</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">29.77</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">895</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.53</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">895</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">25.67</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">766</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">30.82</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.58</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">24.16</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">956</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">32.74</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.09</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.32</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">997</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">33.53</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.76</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">22.91</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">29.82</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">25.07</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">46.45</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">31.77</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">24.10</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">28.52</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">31.86</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">23.33</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">24.02</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">33.37</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">22.74</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">23.41</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-table_3_all_results" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;14: Complete results of CWF and current study for Model 3 (exclusion misspecification)</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Sample Size</th>
+<th style="text-align: left;">Estimator</th>
+<th style="text-align: right;">Mean <br>Observed <br>Chi Square</th>
+<th style="text-align: right;">Proportion <br>Rejected<br>(p&lt;0.05)</th>
+<th style="text-align: right;">N Proper Solutions</th>
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">36.84</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">947</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">37.12</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">947</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">42.47</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">872</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">48.29</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">48.25</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">46.33</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">993</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">86.39</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">86.00</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">70.69</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">149.65</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">148.71</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">113.85</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">38.45</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">39.63</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">52.04</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">51.07</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">51.65</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">50.17</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">92.27</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">92.52</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">76.89</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">161.46</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">161.66</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">127.71</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">43.66</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">913</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">35.83</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">913</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">37.84</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">783</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">55.68</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">993</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">43.81</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">993</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">38.99</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">933</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">93.44</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">70.45</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">53.80</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">986</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">156.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">115.65</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">79.42</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">46.50</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">37.63</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">60.88</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">59.72</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">47.04</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">47.93</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">99.39</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">75.04</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">60.10</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">171.07</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">126.23</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">90.23</td>
+<td style="text-align: right;">11.30</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">47.99</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">854</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">36.24</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">854</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">35.16</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">630</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">63.46</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">969</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">42.34</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">969</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">36.27</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">827</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">102.22</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">61.42</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">998</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">45.79</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">914</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">167.09</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">95.20</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">63.52</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">968</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">52.87</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">38.10</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">81.31</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">68.58</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">44.66</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">47.16</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">109.87</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">63.46</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">53.67</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">180.90</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">101.25</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">76.10</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-table_4_all_results" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;15: Complete results of CWF and current study for Model 4 (inclusion + exclusion misspecification)</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 14%">
+<col style="width: 6%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Sample Size</th>
+<th style="text-align: left;">Estimator</th>
+<th style="text-align: right;">Mean <br>Observed <br>Chi Square</th>
+<th style="text-align: right;">Proportion <br>Rejected<br>(p&lt;0.05)</th>
+<th style="text-align: right;">N Proper Solutions</th>
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">31.30</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">945</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">31.64</td>
+<td style="text-align: right;">0.36</td>
+<td style="text-align: right;">945</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">36.38</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">814</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">39.42</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">39.52</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">40.39</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">982</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">66.26</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">66.34</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">61.60</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">111.37</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">111.23</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">98.68</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">34.03</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">34.97</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">47.99</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">43.75</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">44.34</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">46.42</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">75.29</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">75.62</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">69.62</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">128.71</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">129.16</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">111.39</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Normal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">37.46</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">31.14</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">32.54</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">734</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">45.89</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">983</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">36.67</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">983</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">34.30</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">913</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">73.57</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">56.38</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">47.77</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">978</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">117.44</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">88.25</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">69.99</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">999</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">40.37</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">33.94</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">48.67</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">49.84</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">39.55</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">41.84</td>
+<td style="text-align: right;">0.73</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">81.35</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">62.09</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">53.84</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">133.86</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">100.48</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">80.91</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Moderate</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">37.46</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">31.14</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">30.17</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">575</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">45.89</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">983</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">36.67</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">983</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">31.83</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">796</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">73.57</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">56.38</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">41.04</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">936</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">117.44</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">88.25</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">57.04</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">974</td>
+<td style="text-align: left;">current</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">45.15</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">34.09</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">63.25</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">58.14</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">38.48</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">46.05</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">91.71</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">55.94</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">49.13</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ML</td>
+<td style="text-align: right;">144.56</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">SB</td>
+<td style="text-align: right;">83.44</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: left;">ADF</td>
+<td style="text-align: right;">68.25</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">cwf</td>
+<td style="text-align: left;">Severe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
