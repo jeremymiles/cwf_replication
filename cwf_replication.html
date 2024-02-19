@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="cwf_replication_files/libs/clipboard/clipboard.min.js"></script>
+<script src="cwf_replication_files/libs/quarto-html/quarto.js"></script>
+<script src="cwf_replication_files/libs/quarto-html/popper.min.js"></script>
+<script src="cwf_replication_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="cwf_replication_files/libs/quarto-html/anchor.min.js"></script>
+<link href="cwf_replication_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="cwf_replication_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="cwf_replication_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="cwf_replication_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="cwf_replication_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Authors:</p>
+<p>Jeremy Miles (Google, Los Angeles, USA)</p>
+<p>Alexander Miles (University of Southern California, USA)</p>
+<p>Mark Shevlin (University of Ulster, UK)</p>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>The replication crisis has provoked a great deal of soul searching in many branches of science, including psychology. However, methodologists have recently pointed out that concerns about the replication crisis have largely passed by the methodological community <span class="citation" data-cites="Schoenbrodt2023Reproducibility Strobl2023owls">(<a href="#ref-Schoenbrodt2023Reproducibility" role="doc-biblioref">Schoenbrodt, 2023</a>; <a href="#ref-Strobl2023owls" role="doc-biblioref">Strobl, 2023</a>)</span>. A widely used tool of methodological researchers is that of the simulation study - set up a population with a known data generating process (DGP), take a sample of specified size from that population, apply a statistical method and determine if the data generating process is discovered <span class="citation" data-cites="carsey2013monte">(<a href="#ref-carsey2013monte" role="doc-biblioref">Carsey &amp; Harden, 2013</a>)</span>. There is no opportunity for p-hacking (in its many forms), we run the analysis and report the results. If we run the analysis again, we get the same results. It is perfectly replicable - no need for replication, no replication crisis.</p>
+<p><span class="citation" data-cites="lohmann2022s">Lohmann, Astivia, Morris, &amp; Groenwold (<a href="#ref-lohmann2022s" role="doc-biblioref">2022</a>)</span> suggested that methodological researchers present 10 reasons that we should consider replicating simulation studies.</p>
+<ol type="1">
+<li><p>They can have a major impact. <span class="citation" data-cites="hu1999cutoff">Hu &amp; Bentler (<a href="#ref-hu1999cutoff" role="doc-biblioref">1999</a>)</span> has been cited, according to Google Scholar, over 113,000 times.</p></li>
+<li><p>Simulation reseachers have conflicts of interest too. Although conventional p-hacking would not be done in simulation studies, and could select the specific methods, sample sizes, etc to compare. Less honest researchers could even selectively choose random seeds that reflect their preferences.</p></li>
+<li><p>Selective reporting. Simulation studies can include enormous numbers of combinations of parameters, leading to an explosion of parameters. <span class="citation" data-cites="hu1999cutoff">Hu &amp; Bentler (<a href="#ref-hu1999cutoff" role="doc-biblioref">1999</a>)</span> contains 8 pages of tables in the results section, and a further 23 pages of tables in the appendix. Most researchers (and readers) would prefer a more succinct paper.</p></li>
+<li><p>Differing audiences. Simulation studies are written, reviewed, and read primarily by methodological researchers. A replication may be aimed at substantive researchers who are less interested in the nuances of the techniques, and more interested in knowing which technique is most appropriate for their problem at hand.</p></li>
+<li><p>Code is written by (fallible) humans. The study may be designed, but the code needs to be written to match the design as described in the paper. <span class="citation" data-cites="schonbrodt2018corrigendum">Schonbrodt, Perugini, et al. (<a href="#ref-schonbrodt2018corrigendum" role="doc-biblioref">2018</a>)</span> discovered that the description of the study in their paper, and the accompanying code did not match. This is only discoverable if the code is available, which it frequently is not. In addition, the code runs on more software - even if the code that I use is accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might not be. For example, <span class="citation" data-cites="rigdon1991performance">Rigdon &amp; Ferguson Jr (<a href="#ref-rigdon1991performance" role="doc-biblioref">1991</a>)</span> found that the performance of LISREL’s WLS estimation method was not producing consistent estimation.</p></li>
+<li><p>Every scenario cannot be simulated. A simulation study samples a specific parameter space. An analyst then tries to extrapolate to the particular situation that they find themselves in; a replication might be helpful here.</p></li>
+<li><p>Hidden moderators. Did the initial researchers make an assumption that is hidden. <span class="citation" data-cites="lohmann2022s">Lohmann et al. (<a href="#ref-lohmann2022s" role="doc-biblioref">2022</a>)</span> argue that only by ‘<em>getting our hands dirty, diving deep into the details, and actually retracing each step via replication</em>’ can we uncover such threats to validity.</p></li>
+<li><p>Replication allows us to reflect. Replicating another study is the best (perhaps the only) way to discover the ways in which we could improve our presentation</p></li>
+<li><p>Leading by example. Methodologists argue that research should be clear, accessible and open. Let’s show applied researchers how to do it.</p></li>
+<li><p>Because we can. Replication of a simulation study is straightforward compared with replication of much empirical research, which ranges from ‘difficult’ to ‘impossible and expensive’. We are in a unique position to be able to make contributions to the literature and improve the research quality of an entire field, without dealing with funding bodies, research ethics committees, or even needing to leave our desk. Given how straightforward this is, why not do it?</p></li>
+</ol>
+<p>To their list, we add one more. Replications are frequently software dependent. If we find differences across software implementations, we do not need to suggest that the authors of (complex) statistical analysis software have made errors. Optimization algorithms improve, random number generators differ, default convergence criteria might change.</p>
+<p>The replication crisis has made the importance of openness of code and data more relevant, but the internet has made openness possible. Researchers can now publish their code in Github, for (relative) immortality. Readers of a certain age will remember the ‘Computer Program Exchange’ in the journal Applied Psychological Measurement, an example of which was <span class="citation" data-cites="whittaker2003irtgen">Whittaker, Fitzpatrick, Williams, &amp; Dodd (<a href="#ref-whittaker2003irtgen" role="doc-biblioref">2003</a>)</span>, which says (in part): “. Send a DOS-formatted 3.5-inch diskette and a self-addressed, stamped disk mailer to …”. I do not have a DOS formatted diskette, I do not have a computer that can read it, and (now I think about it) , I don’t know what a disk-mailer is, and the truth is, I can’t remember the last time I used a stamp.</p>
+<p>In this paper we present the results of a replication of a simulation study. In 1996 the first edition of the new journal Psychological Methods contained a paper ‘The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis’ <span class="citation" data-cites="curran1996robustness">Curran, West, &amp; Finch (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span> - we refer to this paper as CWF throughout. In the 27 years since its publication, the study has been cited 7220 times (according to Google Scholar) and continues to be cited in contemporary texts, e.g. <span class="citation" data-cites="kline2023principles">Kline (<a href="#ref-kline2023principles" role="doc-biblioref">2023</a>)</span>. The authors generated data and analyzed it using EQS version 3.0, which was released in 1989. This was (and is) a closed source program - the current version is 7.0. The authors of CWF did not publish their code at the time - this was not frequently done, and was not straightforward.</p>
+<p>We have not requested the code from the authors of CWF. We would be unable to locate code that we (presumably) wrote around 1995 - almost 30 years from the time of writing. Even if we did have their code, we are not aware of any researcher who has EQS version 3.0 available. The latest version of EQS is 7.0 - we also don’t have this, and when we went to the website to determine how much it would cost, the website said that we needed to make an enquiry. On the grounds that if we need to ask, we can’t afford it, we didn’t ask. (Our total funding for this project is $0).</p>
+<p>Instead of using EQS we used open source software: data were generated using the R package simsem <span class="citation" data-cites="simsem">Pornprasertmanit, Miller, Schoemann, &amp; Jorgensen (<a href="#ref-simsem" role="doc-biblioref">2021</a>)</span> and lavaan <span class="citation" data-cites="lavaan">Rosseel (<a href="#ref-lavaan" role="doc-biblioref">2012</a>)</span>. The code is available on Github (https://github.com/jeremymiles/cwf_replication)</p>
+<p>The aim of this paper is to, as closely as possible, replicate the analysis carried out in the CWF paper, and determine the extent to which the results are replicable with more recently developed software.</p>
+</section>
+<section id="method" class="level1">
+<h1>Method</h1>
+<p>The CWF paper (<span class="citation" data-cites="curran1996robustness">Curran et al. (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span>) tested a series of relatively straightforward confirmatory factor analysis model. The model had three factors, which correlated 0.30. Each factor was indicated by three measured variables with loadings equal to 0.7. Four model specifications were tested: - Model 1: Correct specification. - Model 2: Two additional cross loadings were estimated that were not in the population model. (A misspecification of inclusion.) - Model 3: Two additional cross-loadings of 0.35 were included in the population model that were not estimated in the model (a misspecification of exclusion). - Model 4: Combined the misspecification of models 2 and 3, 2 cross-loadings that existed in the population were omitted from the fitted model, and two additional cross loadings that were not in the population model were estimated.</p>
+<p>Each population model was generated under three distributions:</p>
+<ul>
+<li>Normal distribution</li>
+<li>Moderately non-normal (skewness = 2.0, kurtosis = 7.0)</li>
+<li>Severely non-normal (skewness = 3.0, kurtosis = 21.0)</li>
+</ul>
+<p>Four sample sizes were considered: n = 100, 200, 500, 1000.</p>
+<p>The authors used 200 replications for each model. Given increases in speed of computers in the 27 years since the publication of this paper, we used 1000 replications.</p>
+<p>Each model was estimated using maximum likelihood, and an unscaled (ML) and Satorra-Bentler scaled (SB) chi-square statistic was calculated, and the model was also estimated using a WLS / ADF algorithm.</p>
+<p>Data were generated using simsem 0.5-16 and models estimated using lavaan 0.6-17, running on R v4.3.2. (All dependencies were the latest versions published on 2024-02-17.)</p>
+<p><a href="#fig-pop_model_1">Figure&nbsp;1</a> and <span class="citation" data-cites="fig_pop_model_2">(<a href="#ref-fig_pop_model_2" role="doc-biblioref"><strong>fig_pop_model_2?</strong></a>)</span> show the population parameters of the data generating models. The model without cross-loadings (used for models 1 and 2) contains three latent variables (with variance equal to 1), each of which is indicated by three measured variables, with loadings equal to 0.7, and latent variable covariances of 0.3. The model with cross loadings is equivalent to the previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to y6, with loadings equal to 0.35.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_1_c08af2e83ecb1d0292e6d2009205c81f">
+<div class="cell-output-display">
+<div id="fig-pop_model_1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-pop_model_1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Path diagram for population model without cross loadings used.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_2_a382452c24bdf46620044420752d8468">
+<div class="cell-output-display">
+<div id="fig-pop_model_2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-pop_model_2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Path diagram for population model with cross loadings used.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="test-data-generation" class="level2">
+<h2 class="anchored" data-anchor-id="test-data-generation">Test Data Generation</h2>
+<section id="univariate-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="univariate-statistics">Univariate Statistics</h3>
+<p>First, we test the data generation process to ensure that the data match the models we believe we are testing.</p>
+<p>To examine the deviation from normality, we generated three datasets of size 1,000,000 for each of the three distributions (normal, moderately non-normal, severely non-normal).</p>
+<p><a href="#fig-dist_plot">Figure&nbsp;3</a> shows the empirical distribution found from generating all 3 datasets of interest with a sample of N = 1,000,000 and combining all variables (so that each distribution is a sample of 9,000,000). <a href="#tbl-skew_stats">Table&nbsp;1</a> shows the mean, standard deviation, median, skew and kurtosis statistics from the same dataset.</p>
+<p>These values are a match the correct values, showing that the data generating process we described is working as intended [That’s not well phrased. Fix.]</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-dist_plot_b6a62a48c6da6a71b51fe2cc892cdf67">
+<div class="cell-output-display">
+<div id="fig-dist_plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-dist_plot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Plots of normal, moderately non-normal and severely non-normal empirical distributions based on N= 1,000,000.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-skew_stats_e8d838defc68610af4ea20a15a67ae88">
+<div class="cell-output-display">
+<div id="tbl-skew_stats" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;1: Sample statistics for empirical distributions based on N= 1,000,000 (x 9).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">median</th>
+<th style="text-align: right;">skew</th>
+<th style="text-align: right;">kurtosis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Normal</td>
+<td style="text-align: right;">1.03e-17</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: right;">1.19e-17</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.260</td>
+<td style="text-align: right;">2.006</td>
+<td style="text-align: right;">6.980</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Severe</td>
+<td style="text-align: right;">-6.76e-18</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.252</td>
+<td style="text-align: right;">3.026</td>
+<td style="text-align: right;">21.371</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="correlations" class="level3">
+<h3 class="anchored" data-anchor-id="correlations">Correlations</h3>
+<p>In this section we examine the empirical correlations for data with N = 1,000,000 to check that the empirical distributions match the expected population matrices.</p>
+<p>The correlation matrices below are calculated from each of the 6 6 distributions (2 population models, 3 distributions) with a sample size of 1,000,000. The correlations match the values in the population (within 0.01).</p>
+<div class="cell" data-tbl-panel="layout-ncol=1" data-hash="cwf_replication_cache/html/tbl-cors_data_1_dd031e71952d628302ed64943ce18861">
+<div class="cell-output-display">
+<div id="tbl-cors_data_1" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2: Correlation Matrix for Data 1 (no cross loadings), Normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-cors_data_2_2760cd1a82658584dce41a85afa681f4">
+<div class="cell-output-display">
+<div id="tbl-cors_data_2" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;3: Correlation Matrix for Data 1 (no cross loadings), moderately non-normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-cors_data_3_f0dad302a5a2e9647a17649a9b425a70">
+<div class="cell-output-display">
+<div id="tbl-cors_data_3" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;4: Correlation Matrix for Data 1 (no cross loadings), severely non-normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-cors_data_4_dbc22d99fa9e9bee365cd0efd97fe948">
+<div class="cell-output-display">
+<div id="tbl-cors_data_4" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;5: Correlation Matrix for Data 2 (cross loadings), Normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-tbl-panel="layout-ncol=1" data-hash="cwf_replication_cache/html/tbl-cors_data_5_fd6b9db4ebdc4520e97022287cf77f1d">
+<div class="cell-output-display">
+<div id="tbl-cors_data_5" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;6: Correlation Matrix for Data 2 (cross loadings), moderately non-normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-cors_data_6_a7fa4af2ae6f3bc18050214ed23e6f29">
+<div class="cell-output-display">
+<div id="tbl-cors_data_6" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;7: Correlation Matrix for Data 2 (cross loadings), severely non-normal distribution.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">y1</th>
+<th style="text-align: right;">y2</th>
+<th style="text-align: right;">y3</th>
+<th style="text-align: right;">y4</th>
+<th style="text-align: right;">y5</th>
+<th style="text-align: right;">y6</th>
+<th style="text-align: right;">y7</th>
+<th style="text-align: right;">y8</th>
+<th style="text-align: right;">y9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">y1</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y2</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y3</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y4</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y5</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y6</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y7</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">y8</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">y9</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.49</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="model-fit-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-fit-comparison">Model Fit Comparison</h2>
+<p>In this section we compare the model fit results we obtained with those presented in the CWF paper.</p>
+<section id="model-1-correct-specification" class="level3">
+<h3 class="anchored" data-anchor-id="model-1-correct-specification">Model 1: Correct Specification</h3>
+<p><a href="#fig-plot_chi_1">Figure&nbsp;4</a> shows the mean chi-squares obtained in the CWF paper and the current simulation. The values for the ML and SB chi-squares are very similar. However the ADF/WLS estimates are discrepant, and the discrepancy is larger with smaller sample sizes and greater departure from normality. At sample sizes 500 and above the chi-square differences are all around 1 point or less, but at smaller sample sizes, the differences increase. In the sample size of 100, when the distribution is normal, the difference in chi-squares is 3.6, with moderately non-normal it is 7.2 and severely non-normal the difference increases to 15.6. the</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_chi_1_303324afd70b54e4debae9cc0db3f260">
+<div class="cell-output-display">
+<div id="fig-plot_chi_1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_chi_1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Model 1: Correct Specification. Mean chi-square values obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The story is repeated when we consider rejection rates, shown in <a href="#fig-plot_rejects_1">Figure&nbsp;5</a>. Proportion of models were p &lt; 0.05 is very similar for ML and SB, but there are quite dramatic differences in rejection rates for ADF/WLS at smaller samples, with CWF finding higher rejection rates with small samples, and this difference increases as the degree of non-normality increases.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_rejects_1_8b844677f8f80ed7a106084316110f99">
+<div class="cell-output-display">
+<div id="fig-plot_rejects_1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_rejects_1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Model 1: Correct Specification. Proportion of models where p &lt; 0.05 obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-2-inclusion-misspecification" class="level3">
+<h3 class="anchored" data-anchor-id="model-2-inclusion-misspecification">Model 2: Inclusion Misspecification</h3>
+<p><a href="#fig-plot_chi_2">Figure&nbsp;6</a> shows the mean chi-squares obtained in the CWF paper and the current simulation for model 2 (which had a misspecification of inclusion). These results are substantively equivalent to those for model 1: SB and ML are similar, ADF/WLS is larger in CWF, and the differences are larger with smaller sample sizes and greater deviation from normality.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_chi_2_a001bad0bf5799f3136ee4aae1bdc858">
+<div class="cell-output-display">
+<div id="fig-plot_chi_2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_chi_2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: Model 1: Correct Specification. Mean chi-square values obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Differences in rejection rates for model 2 reflect those of model 1, as shown in <a href="#fig-plot_rejects_2">Figure&nbsp;7</a>. Rejection rates were found to be higher in the CWF paper than in the current simulation, for small samples and deviation from normality.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_rejects_2_79191032f339613e0257d284d3b6d9fc">
+<div class="cell-output-display">
+<div id="fig-plot_rejects_2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_rejects_2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Model 2: Correct Specification. Proportion of models where p &lt; 0.05 obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-3-exclusion-misspecification" class="level3">
+<h3 class="anchored" data-anchor-id="model-3-exclusion-misspecification">Model 3: Exclusion Misspecification</h3>
+<p><a href="#fig-plot_chi_3">Figure&nbsp;8</a> shows the mean chi-squares obtained in the CWF paper and the current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_chi_3_06477f51a41b235565816e15109faa82">
+<div class="cell-output-display">
+<div id="fig-plot_chi_3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_chi_3-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: Model 3: Incorrect Specification Exclusion. Mean chi-square values obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in <a href="#fig-plot_rejects_3">Figure&nbsp;9</a>. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_rejects_3_660409c2ded2a77169951b105a9a034c">
+<div class="cell-output-display">
+<div id="fig-plot_rejects_3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_rejects_3-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: <strong>?(caption)</strong></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-4-exclusion-and-inclusion-misspecification" class="level3">
+<h3 class="anchored" data-anchor-id="model-4-exclusion-and-inclusion-misspecification">Model 4: Exclusion and Inclusion Misspecification</h3>
+<p><a href="#fig-plot_chi_3">Figure&nbsp;8</a> shows the mean chi-squares obtained in the CWF paper and the current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_chi_4_6924d514a4fd0c5d0c16c1b0de8b5fca">
+<div class="cell-output-display">
+<div id="fig-plot_chi_4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_chi_4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10: Model 4: Incorrect Specification - Exclusion + Inclusion. Mean chi-square values obtained from three estimators in CWF paper and current simulation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in <a href="#fig-plot_rejects_3">Figure&nbsp;9</a>. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-plot_rejects_4_2eeaccc5b4e852ec7f49ead81fcbc0f3">
+<div class="cell-output-display">
+<div id="fig-plot_rejects_4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-plot_rejects_4-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: <strong>?(caption)</strong></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="expected-values-of-chi-square" class="level2">
+<h2 class="anchored" data-anchor-id="expected-values-of-chi-square">Expected Values of Chi-Square</h2>
+<p>The Satorra-Saris <span class="citation" data-cites="satorra1985power">(<a href="#ref-satorra1985power" role="doc-biblioref">Satorra &amp; Saris, 1985</a>)</span> method can be used to calculate the expected value of chi-square, given ML estimation and normally distributed data. For models 1 and 2 this value is trivial to calculate, as the models are correctly specified (or when they are incorrect, the error is one of inclusion) hence the expected chi-square values are equal to the degrees of freedom in the model. For models 3 and 4 we calculate the expected values of chi-square using the Satorra-Saris method (which is described in more detail in CWF).</p>
+<p>The expected values that we calculate are consistently lower than the expected values calculated by CWF. It appears that for each simulation (this one, and CWF), the expected values of chi-square are a closer match to the mean observed value. For example, for Model 3, sample size 100, the current study’s calculated expected value of chi-square is 36.45 and the mean observed value is 36.84; for CWF, the expected value is 37.62 and the observed is 38.45. For model 4, sample size 1000, current study expected: 110.44, observed 111.37, for CWF the values are 128.20 and 128.71.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/tbl-expected_chis_afd3e5b35b6595b7f4f634a8230e0a4e">
+<div class="cell-output-display">
+<div id="tbl-expected_chis" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;8: Expected values of chi-square for models 3 and 4 in current study and CWF</caption>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 29%">
+<col style="width: 16%">
+<col style="width: 29%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Model 3: Current Study</th>
+<th style="text-align: right;">Model 3: CWF</th>
+<th style="text-align: right;">Model 4: Current Study</th>
+<th style="text-align: right;">Model 4: CWF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">36.45</td>
+<td style="text-align: right;">37.62</td>
+<td style="text-align: right;">30.84</td>
+<td style="text-align: right;">32.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">48.91</td>
+<td style="text-align: right;">51.38</td>
+<td style="text-align: right;">39.69</td>
+<td style="text-align: right;">43.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">86.27</td>
+<td style="text-align: right;">92.66</td>
+<td style="text-align: right;">66.22</td>
+<td style="text-align: right;">75.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">148.54</td>
+<td style="text-align: right;">161.35</td>
+<td style="text-align: right;">110.44</td>
+<td style="text-align: right;">128.20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>One possible explanation for this discrepancy is that the error variances were misreported in Figure 1 of CWF. Figure 1 of CWF shows that each of the measured variables has a residual variance of 0.51 in both the model with and without the cross loadings. If this is the case, when the cross loading is added to the model, the variance of the item must increase.</p>
+<p>The CFA model presented in Figure 1 of the paper suggests that in the population models without cross loadings, the variance of all items is 1.00, but in the models with cross loadings, the variance of items 6 and 7 increases to 1.269, while all of the other items have variances equal to 1.</p>
+<p>To test this hypothesis, we modified the population model so that the residual variances of items 6 and 7 were not 0.51 in the population model, but were 0.25. This change meant that the implied variances of all of the items was 1.00. The path diagram, drawn from the model, is shown in <a href="#fig-pop_model_new">Figure&nbsp;12</a>, and the calculated expected values of chi-square from the modified model alongside the values presented in CWF are shown in <a href="#tbl-expected_chis_modified">Table&nbsp;9</a>.</p>
+<div class="cell" data-hash="cwf_replication_cache/html/fig-pop_model_new_059851716eb8c1717422c6b74022edba">
+<div class="cell-output-display">
+<div id="fig-pop_model_new" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="cwf_replication_files/figure-html/fig-pop_model_new-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12: Path diagram for population model with cross loadings and modified residual variance</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-expected_chis_modified" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;9: Expected values of chi-square for models 3 and 4 in current study and CWF</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 26%">
+<col style="width: 19%">
+<col style="width: 26%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Model 3: Modified</th>
+<th style="text-align: right;">Model 3: CWF</th>
+<th style="text-align: right;">Model 4: Modified</th>
+<th style="text-align: right;">Model 4: CWF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">37.97</td>
+<td style="text-align: right;">37.62</td>
+<td style="text-align: right;">32.62</td>
+<td style="text-align: right;">32.52</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">51.95</td>
+<td style="text-align: right;">51.38</td>
+<td style="text-align: right;">43.24</td>
+<td style="text-align: right;">43.14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">93.87</td>
+<td style="text-align: right;">92.66</td>
+<td style="text-align: right;">75.09</td>
+<td style="text-align: right;">75.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">163.73</td>
+<td style="text-align: right;">161.35</td>
+<td style="text-align: right;">128.19</td>
+<td style="text-align: right;">128.20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>In this paper we replicated, as precisely as possible, a simulation study originally presented by <span class="citation" data-cites="curran1996robustness">Curran et al. (<a href="#ref-curran1996robustness" role="doc-biblioref">1996</a>)</span>. Where the data generation and analysis was done using EQS 3.0, we used the R packages simsem and Lavaan.</p>
+<p>Overall, our results were substantively similar and the conclusions about the appropriateness of the different estimators would not have been altered by the differences between our results.</p>
+<p>However, there were consistent differences between the results, which were intriguing. The chi-square values obtained in the original paper were consistently higher than the results that we obtained, for almost all estimators at all sample sizes. When we compared the expected chi-squares, which are calculation based, not simulation based, these differences remained - the expected chi-square values of Curran, et al, were similar to the obtained chi-square values that they found via simulation. The expected chi-square values that we calculated were more similar to the obtained chi-square values that we found via simulation.</p>
+<p>We believe that this difference may be due to an error in the presentation in a figure in the table. Residual variances were possibly erroneously reported as being equal in all models, where in models with cross loadings, these residual variances may have been reduced. The change in residual variance is easy to overlook as this is not a part of the model that one is generally particularly interested in, and we rarely make or test hypotheses about the estimates of residual variances.</p>
+<p>However, this exercise leads us to some conclusions. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information.</p>
+<p>In this paper we have used the semPlot package <span class="citation" data-cites="EpskampSemPlot">(<a href="#ref-EpskampSemPlot" role="doc-biblioref">Epskamp, 2022</a>)</span> to draw path diagrams based on the models that we fitted. Although we believe that we can draw path diagrams that are more esthetically pleasing using other programs, the use of semPlot (or similar software) which takes the fitted model as input and draws output ensures that the path diagram matches the models.</p>
+<p>Finally, the experience of carrying out this work has shown that, for us at least, it is very difficult to fully evaluate a simulation study by reading it, and not replicating it. The authors of CWF acknowledge both Peter Bentler and Douglas Bonett - SEM practitioners and researchers that one would generally defer to, but it appears that neither of these researchers noted the omission of the change in the residual variances. In addition, if any of the 7000+ authors who have cited this paper have made this connection, it has not been brought to our attention.</p>
+</section>
+<section id="references" class="level1 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-carsey2013monte" class="csl-entry" role="listitem">
+Carsey, T. M., &amp; Harden, J. J. (2013). <em>Monte carlo simulation and resampling methods for social science</em>. Sage Publications.
+</div>
+<div id="ref-curran1996robustness" class="csl-entry" role="listitem">
+Curran, P. J., West, S. G., &amp; Finch, J. F. (1996). The robustness of test statistics to nonnormality and specification error in confirmatory factor analysis. <em>Psychological methods</em>, <em>1</em>(1), 16.
+</div>
+<div id="ref-EpskampSemPlot" class="csl-entry" role="listitem">
+Epskamp, S. (2022). <em>semPlot: Path diagrams and visual analysis of various SEM packages’ output</em>. Retrieved from <a href="https://CRAN.R-project.org/package=semPlot">https://CRAN.R-project.org/package=semPlot</a>
+</div>
+<div id="ref-hu1999cutoff" class="csl-entry" role="listitem">
+Hu, L., &amp; Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. <em>Structural equation modeling: a multidisciplinary journal</em>, <em>6</em>(1), 1–55.
+</div>
+<div id="ref-kline2023principles" class="csl-entry" role="listitem">
+Kline, R. B. (2023). <em>Principles and practice of structural equation modeling</em>. Guilford publications.
+</div>
+<div id="ref-lohmann2022s" class="csl-entry" role="listitem">
+Lohmann, A., Astivia, O. L., Morris, T. P., &amp; Groenwold, R. H. (2022). It’s time! Ten reasons to start replicating simulation studies. <em>Frontiers in Epidemiology</em>, <em>2</em>, 973470.
+</div>
+<div id="ref-simsem" class="csl-entry" role="listitem">
+Pornprasertmanit, S., Miller, P., Schoemann, A., &amp; Jorgensen, T. D. (2021). <em>Simsem: SIMulated structural equation modeling</em>. Retrieved from <a href="https://CRAN.R-project.org/package=simsem">https://CRAN.R-project.org/package=simsem</a>
+</div>
+<div id="ref-rigdon1991performance" class="csl-entry" role="listitem">
+Rigdon, E. E., &amp; Ferguson Jr, C. E. (1991). The performance of the polychoric correlation coefficient and selected fitting functions in confirmatory factor analysis with ordinal data. <em>Journal of marketing research</em>, <em>28</em>(4), 491–497.
+</div>
+<div id="ref-lavaan" class="csl-entry" role="listitem">
+Rosseel, Y. (2012). <a href="https://doi.org/10.18637/jss.v048.i02"><span class="nocase">lavaan</span>: An <span>R</span> package for structural equation modeling</a>. <em>Journal of Statistical Software</em>, <em>48</em>(2), 1–36.
+</div>
+<div id="ref-satorra1985power" class="csl-entry" role="listitem">
+Satorra, A., &amp; Saris, W. E. (1985). Power of the likelihood ratio test in covariance structure analysis. <em>Psychometrika</em>, <em>50</em>, 83–90.
+</div>
+<div id="ref-Schoenbrodt2023Reproducibility" class="csl-entry" role="listitem">
+Schoenbrodt, F. (2023). Reproducibility in methodological research: Modelling and improving epistemic uncertainty. University of Gent, Belgium: European Association of Methodology.
+</div>
+<div id="ref-schonbrodt2018corrigendum" class="csl-entry" role="listitem">
+Schonbrodt, F., Perugini, M., et al. (2018). <em>Corrigendum to <span>“at what sample size do correlations stabilize?”</span>[j. Res. Pers. 47 (2013) 609–612](S0092656613000858)(10.1016/j. Jrp. 2013.05. 009)</em>.
+</div>
+<div id="ref-Strobl2023owls" class="csl-entry" role="listitem">
+Strobl, C. (2023). Bringing owls to athens: Some thoughts on what makes a good simulation study in methodological research. University of Gent, Belgium: European Association of Methodology.
+</div>
+<div id="ref-whittaker2003irtgen" class="csl-entry" role="listitem">
+Whittaker, T. A., Fitzpatrick, S. J., Williams, N. J., &amp; Dodd, B. G. (2003). IRTGEN: A SAS macro program to generate known trait scores and item responses for commonly used item response theory models. <em>Applied Psychological Measurement</em>, <em>27</em>(4), 299–300.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

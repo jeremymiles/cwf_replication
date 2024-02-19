@@ -1,0 +1,1957 @@
+---
+title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
+
+format: 
+  pdf:
+    fig-pos: "H"
+bibliography: citations.bib
+csl: apa-5th-edition.csl
+editor: 
+  markdown: 
+    wrap: 80
+---
+
+Authors:
+
+Jeremy Miles (Google, Los Angeles, USA)
+
+Alexander Miles (University of Southern California, USA)
+
+Mark Shevlin (University of Ulster, UK)
+
+# Background
+
+The replication crisis has provoked a great deal of soul searching in many
+branches of science, including psychology. However, methodologists have recently
+pointed out that concerns about the replication crisis have largely passed by
+the methodological community [@Schoenbrodt2023Reproducibility; @Strobl2023owls].
+A widely used tool of methodological researchers is that of the simulation
+study - set up a population with a known data generating process (DGP), take a
+sample of specified size from that population, apply a statistical method and
+determine if the data generating process is discovered [@carsey2013monte]. There
+is no opportunity for p-hacking (in its many forms), we run the analysis and
+report the results. If we run the analysis again, we get the same results. It is
+perfectly replicable - no need for replication, no replication crisis.
+
+@lohmann2022s suggested that methodological researchers present 10 reasons that
+we should consider replicating simulation studies.
+
+1.  They can have a major impact. @hu1999cutoff has been cited, according to
+    Google Scholar, over 113,000 times.
+
+2.  Simulation reseachers have conflicts of interest too. Although conventional
+    p-hacking would not be done in simulation studies, and could select the
+    specific methods, sample sizes, etc to compare. Less honest researchers
+    could even selectively choose random seeds that reflect their preferences.
+
+3.  Selective reporting. Simulation studies can include enormous numbers of
+    combinations of parameters, leading to an explosion of parameters.
+    @hu1999cutoff contains 8 pages of tables in the results section, and a
+    further 23 pages of tables in the appendix. Most researchers (and readers)
+    would prefer a more succinct paper.
+
+4.  Differing audiences. Simulation studies are written, reviewed, and read
+    primarily by methodological researchers. A replication may be aimed at
+    substantive researchers who are less interested in the nuances of the
+    techniques, and more interested in knowing which technique is most
+    appropriate for their problem at hand.
+
+5.  Code is written by (fallible) humans. The study may be designed, but the
+    code needs to be written to match the design as described in the paper.
+    @schonbrodt2018corrigendum discovered that the description of the study in
+    their paper, and the accompanying code did not match. This is only
+    discoverable if the code is available, which it frequently is not. In
+    addition, the code runs on more software - even if the code that I use is
+    accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might
+    not be. For example, @rigdon1991performance found that the performance of
+    LISREL's WLS estimation method was not producing consistent estimation.
+
+6.  Every scenario cannot be simulated. A simulation study samples a specific
+    parameter space. An analyst then tries to extrapolate to the particular
+    situation that they find themselves in; a replication might be helpful here.
+
+7.  Hidden moderators. Did the initial researchers make an assumption that is
+    hidden. @lohmann2022s argue that only by '*getting our hands dirty, diving
+    deep into the details, and actually retracing each step via replication*'
+    can we uncover such threats to validity.
+
+8.  Replication allows us to reflect. Replicating another study is the best
+    (perhaps the only) way to discover the ways in which we could improve our
+    presentation
+
+9.  Leading by example. Methodologists argue that research should be clear,
+    accessible and open. Let's show applied researchers how to do it.
+
+10. Because we can. Replication of a simulation study is straightforward
+    compared with replication of much empirical research, which ranges from
+    'difficult' to 'impossible and expensive'. We are in a unique position to be
+    able to make contributions to the literature and improve the research
+    quality of an entire field, without dealing with funding bodies, research
+    ethics committees, or even needing to leave our desk. Given how
+    straightforward this is, why not do it?
+
+To their list, we add one more. Replications are frequently software dependent.
+If we find differences across software implementations, we do not need to
+suggest that the authors of (complex) statistical analysis software have made
+errors. Optimization algorithms improve, random number generators differ,
+default convergence criteria might change.
+
+The replication crisis has made the importance of openness of code and data more
+relevant, but the internet has made openness possible. Researchers can now
+publish their code in Github, for (relative) immortality. Readers of a certain
+age will remember the 'Computer Program Exchange' in the journal Applied
+Psychological Measurement, an example of which was @whittaker2003irtgen, which
+says (in part): ". Send a DOS-formatted 3.5-inch diskette and a self-addressed,
+stamped disk mailer to ...". I do not have a DOS formatted diskette, I do not
+have a computer that can read it, and (now I think about it) , I don't know what
+a disk-mailer is, and the truth is, I can't remember the last time I used a
+stamp.
+
+In this paper we present the results of a replication of a simulation study. In
+1996 the first edition of the new journal Psychological Methods contained a
+paper 'The Robustness of Test Statistics to Nonnormality and Specification Error
+in Confirmatory Factor Analysis' @curran1996robustness - we refer to this paper
+as CWF throughout. In the 27 years since its publication, the study has been
+cited 7220 times (according to Google Scholar) and continues to be cited in
+contemporary texts, e.g. @kline2023principles. The authors generated data and
+analyzed it using EQS version 3.0, which was released in 1989. This was (and is)
+a closed source program - the current version is 7.0. The authors of CWF did not
+publish their code at the time - this was not frequently done, and was not
+straightforward.
+
+We have not requested the code from the authors of CWF. We would be unable to
+locate code that we (presumably) wrote around 1995 - almost 30 years from the
+time of writing. Even if we did have their code, we are not aware of any
+researcher who has EQS version 3.0 available. The latest version of EQS is 7.0 -
+we also don't have this, and when we went to the website to determine how much
+it would cost, the website said that we needed to make an enquiry. On the
+grounds that if we need to ask, we can't afford it, we didn't ask. (Our total
+funding for this project is \$0).
+
+Instead of using EQS we used open source software: data were generated using the
+R package simsem @simsem and lavaan @lavaan. The code is available on Github
+(https://github.com/jeremymiles/cwf_replication)
+
+The aim of this paper is to, as closely as possible, replicate the analysis
+carried out in the CWF paper, and determine the extent to which the results are
+replicable with more recently developed software.
+
+# Method
+
+The CWF paper (@curran1996robustness) tested a series of relatively
+straightforward confirmatory factor analysis model. The model had three factors,
+which correlated 0.30. Each factor was indicated by three measured variables
+with loadings equal to 0.7. Four model specifications were tested: - Model 1:
+Correct specification. - Model 2: Two additional cross loadings were estimated
+that were not in the population model. (A misspecification of inclusion.) -
+Model 3: Two additional cross-loadings of 0.35 were included in the population
+model that were not estimated in the model (a misspecification of exclusion). -
+Model 4: Combined the misspecification of models 2 and 3, 2 cross-loadings that
+existed in the population were omitted from the fitted model, and two additional
+cross loadings that were not in the population model were estimated.
+
+Each population model was generated under three distributions:
+
+-   Normal distribution
+-   Moderately non-normal (skewness = 2.0, kurtosis = 7.0)
+-   Severely non-normal (skewness = 3.0, kurtosis = 21.0)
+
+Four sample sizes were considered: n = 100, 200, 500, 1000.
+
+The authors used 200 replications for each model. Given increases in speed of
+computers in the 27 years since the publication of this paper, we used 1000
+replications.
+
+Each model was estimated using maximum likelihood, and an unscaled (ML) and
+Satorra-Bentler scaled (SB) chi-square statistic was calculated, and the model
+was also estimated using a WLS / ADF algorithm.
+
+Data were generated using simsem 0.5-16 and models estimated using lavaan
+0.6-17, running on R v4.3.2. (All dependencies were the latest versions
+published on 2024-02-17.)
+
+```{r setup, echo = FALSE}
+#| output: FALSE
+### Change this to match your setup!
+setwd("D:/documents/cwf_replication")
+###
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message=FALSE)
+
+suppressMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(glue)
+  library(lavaan)
+  library(moments)
+  library(parallel)
+  library(psych)
+  library(purrr)
+  library(semptools)
+  library(semPlot)
+  library(simsem)
+  library(snow)
+})
+
+set.seed(42)
+
+# Some functions moved to setup, so that they are 
+# available to parallel processes.
+source("functions.R")
+
+```
+
+```{r population models, echo = FALSE}
+#|cache: TRUE
+
+# Set up 3 SimDataDist objects, each with 9 variables, and with skew and 
+# kurtosis of 0, 0 (normal), 2, 7 and 3, 21, representing normal, moderately
+# non-normal and severely non-normal 
+dist_1 <- simsem::bindDist(skewness = 0, kurtosis = 0)
+dist_2 <- simsem::bindDist(skewness = 2, kurtosis = 7)
+dist_3 <- simsem::bindDist(skewness = 3, kurtosis = 21)
+
+# Model specification 3
+model_3 <-
+  # misspecification of exclusion
+  # same as model 1 but fit to dgp_cross_loadings
+  model_1
+
+# Model specification 4
+model_4 <-
+  # misspecification of exclusion AND inclusion
+  # same as model 2 but fit to dgp_cross_loadings
+  model_2
+
+```
+
+```{r ml_expected_values, echo = FALSE}
+# To get expected values of chi-square
+# 1. Generate population model
+# First need an empty 9x9 covariance matrix
+mat_empty <- rep(0, 81) %>% matrix(nrow = 9)
+diag(mat_empty) <- 1
+colnames(mat_empty) <- rownames(mat_empty) <- paste0("y", 1:9)
+# 2. Fit the population model
+fit_1_pop <- lavaan::cfa(
+  dgp_model_no_cross_loadings, sample.cov = mat_empty, sample.nobs = 100
+)
+
+fit_3_pop <- lavaan::cfa(
+  dgp_model_cross_loadings, sample.cov = mat_empty, sample.nobs = 1000
+)
+
+# Get the fitted covariance matrix - this is population matrix
+pop_cov_no_cross_loadings <- fitted(fit_1_pop)
+pop_cov_cross_loadings <- fitted(fit_3_pop)
+
+# 3a. Fit model 1 and 2  to the pop data without cross loadings. 
+# These are not very interesting as fit is perfect.
+
+fit_1_100 <- lavaan::cfa(
+  model_1, sample.cov = pop_cov_no_cross_loadings, sample.nobs = 100
+)
+fit_1_1000 <- lavaan::cfa(
+  model_1, sample.cov = pop_cov_no_cross_loadings, sample.nobs = 1000
+)
+
+
+# 3b. Fit models to data with cross loadings.
+fit_3_100 <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_cross_loadings, sample.nobs = 100
+)
+fit_3_200 <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_cross_loadings, sample.nobs = 200
+)
+fit_3_500 <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_cross_loadings, sample.nobs = 500
+)
+fit_3_1000 <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_cross_loadings, sample.nobs = 1000
+)
+
+fit_4_100 <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_cross_loadings, sample.nobs = 100
+)
+fit_4_200 <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_cross_loadings, sample.nobs = 200
+)
+fit_4_500 <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_cross_loadings, sample.nobs = 500
+)
+fit_4_1000 <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_cross_loadings, sample.nobs = 1000
+)
+
+
+```
+
+@fig-pop_model_1 and @fig_pop_model_2 show the population parameters of the data generating models. The model without cross-loadings (used for models 1 and 2) contains three latent variables (with variance equal to 1), each of which is indicated by three measured variables, with loadings equal to 0.7, and latent variable covariances of 0.3. The model with cross loadings is equivalent to the previous model, with the addition of two cross-loadings, from F1 to y7 and F3 to y6, with loadings equal to 0.35.
+
+```{r pop_model_1}
+#| cache: TRUE
+#| label: fig-pop_model_1
+#| fig-cap: "Path diagram for population model without cross loadings used."
+
+semPaths(
+  fit_1_pop, 
+  what = "est", 
+  edge.color = "black",
+  style = "lisrel",
+  fixedStyle = c("black", 1)
+  )
+
+```
+
+
+```{r pop_model_1}
+#| cache: TRUE
+#| label: fig-pop_model_2
+#| fig-cap: "Path diagram for population model with cross loadings used."
+
+semPaths(
+  fit_3_pop, 
+  what = "est", 
+  edge.color = "black",
+  style = "lisrel",
+  fixedStyle = c("black", 1)
+  )
+
+```
+
+
+
+# Results
+
+## Test Data Generation
+
+### Univariate Statistics
+
+First, we test the data generation process to ensure that the data match the
+models we believe we are testing.
+
+To examine the deviation from normality, we generated three datasets of size
+1,000,000 for each of the three distributions (normal, moderately non-normal,
+severely non-normal).
+
+```{r test_dgp, echo = FALSE}
+#| cache: TRUE
+
+
+# generate figure 2 from paper 
+# Note: paper used n = 10k, we use 100k (because we can, thanks to Moore's Law)
+df_large_normal_dist <-  simsem::generate(
+  model = dgp_model_no_cross_loadings, n = 100000,  indDist=dist_1
+)
+df_large_moderately_non_normal_dist <-  simsem::generate(
+  model = dgp_model_no_cross_loadings, n = 100000,  indDist=dist_2
+) 
+df_large_severely_non_normal_dist <-  simsem::generate(
+  model = dgp_model_no_cross_loadings, n = 100000,  indDist=dist_3
+)
+
+df_normal_dist_long <-  df_large_normal_dist %>% 
+  unlist() %>%
+  data.frame(y = ., Distribution = "normal") %>%
+  dplyr::mutate(y = scale(y))
+df_moderate_dist_long <-  df_large_moderately_non_normal_dist %>% 
+  unlist() %>%
+  data.frame(y = ., Distribution = "moderate") %>%
+  dplyr::mutate(y = scale(y))
+df_severe_dist_long <-  df_large_severely_non_normal_dist %>% 
+  unlist() %>%
+  data.frame(y = ., Distribution = "severe") %>%
+  dplyr::mutate(y = scale(y))
+
+
+df_all_dists <- dplyr::bind_rows(
+  list(
+    df_normal_dist_long,
+    df_moderate_dist_long,
+    df_severe_dist_long
+  )
+)
+
+```
+
+@fig-dist_plot shows the empirical distribution found from generating all 3
+datasets of interest with a sample of N = 1,000,000 and combining all variables
+(so that each distribution is a sample of 9,000,000). @tbl-skew_stats shows the
+mean, standard deviation, median, skew and kurtosis statistics from the same
+dataset.
+
+These values are a match the correct values, showing that the data generating
+process we described is working as intended \[That's not well phrased. Fix.\]
+
+```{r dist_plots, echo = FALSE}
+#| cache: TRUE
+#| label: fig-dist_plot
+#| fig-cap: "Plots of normal, moderately non-normal and severely non-normal empirical distributions based on N= 1,000,000."
+
+# Draw histogram of three curves
+df_all_dists %>% 
+  ggplot2::ggplot(
+    aes(x = y, color = Distribution)) +
+  geom_density(aes(linetype = Distribution), linewidth = 1) +
+  xlab("Standardized Value") + 
+  ylab("Density")  +
+  scale_x_continuous(breaks = seq(-4, 4, by = 1), limits = c(-4, 4))
+```
+
+```{r check_skew}
+
+
+# Check skew and kurtosis values
+res_dist <- psych::describeBy(data = df_all_dists, y ~ Distribution) %>%
+  purrr::map(as.data.frame) %>%
+  dplyr::bind_rows() %>%
+  dplyr::select(mean, sd, median, skew, kurtosis)
+# Reorder because describe put them in alphabetical order
+res_dist <- res_dist[c(2, 1, 3), ]
+rownames(res_dist) <- c( "Normal","Moderate", "Severe")
+
+
+
+
+# Check the correlations with some large N   
+list_large_dfs <- GenerateDFs(1e6)
+list_cor_mats <- lapply(list_large_dfs, function(x){
+  round(cor(x), 2)
+})
+
+
+
+```
+
+```{r dist_stats, echo=FALSE}
+#| cache: TRUE
+#| label: tbl-skew_stats
+#| tbl-cap: "Sample statistics for  empirical distributions based on N= 1,000,000 (x 9)."
+
+res_dist$mean <- as.character(signif(res_dist$mean, 3))
+res_dist$sd <- as.character(signif(res_dist$sd, 3))
+knitr::kable(res_dist, digits = 3, align = rep("r", 6))
+
+
+```
+
+### Correlations
+
+In this section we examine the empirical correlations for data with N =
+1,000,000 to check that the empirical distributions match the expected
+population matrices.
+
+The correlation matrices below are calculated from each of the 6 6 distributions
+(2 population models, 3 distributions) with a sample size of 1,000,000. The
+correlations match the values in the population (within 0.01).
+
+```{r corrs1, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_1
+#| tbl-cap: "Correlation Matrix for Data 1 (no cross loadings), Normal distribution."
+#| tbl-panel: layout-ncol=1
+
+#| tbl-first
+knitr::kable(list_cor_mats[[1]], digits = 3)
+```
+
+```{r corrs2, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_2
+#| tbl-cap: "Correlation Matrix for Data 1 (no cross loadings), moderately non-normal  distribution."
+
+knitr::kable(list_cor_mats[[2]], digits = 3)
+
+```
+
+```{r corrs2, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_3
+#| tbl-cap: "Correlation Matrix for Data 1 (no cross loadings), severely non-normal distribution."
+
+knitr::kable(list_cor_mats[[3]], digits = 3)
+
+```
+
+```{r corrs4, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_4
+#| tbl-cap: "Correlation Matrix for Data 2 (cross loadings), Normal distribution."
+
+knitr::kable(list_cor_mats[[4]], digits = 3)
+```
+
+```{r corrs2, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_5
+#| tbl-cap: "Correlation Matrix for Data 2 (cross loadings), moderately non-normal  distribution."
+#| tbl-panel: layout-ncol=1
+
+#| tbl-second
+knitr::kable(list_cor_mats[[5]], digits = 3)
+
+```
+
+```{r corrs2, echo = FALSE}
+#| cache: TRUE
+#| label: tbl-cors_data_6
+#| tbl-cap: "Correlation Matrix for Data 2 (cross loadings), severely non-normal distribution."
+
+knitr::kable(list_cor_mats[[6]], digits = 3)
+
+```
+
+```{r run_simulation, echo=FALSE}
+
+n_sims <- 1000
+
+# check if file is saved. If not, recreate. If it is, we've already
+# run the simulations and can just load them.
+if(!file.exists("chis_calculated.RData")) {
+  
+  print(Sys.time()) # get the time now, so you know when this is running
+  cl <- snow::makeCluster(getOption("cl.cores", 14))
+  snow::clusterExport(cl, "n_sims")
+  snow::clusterSetupRNGstream (cl, seed=42) # set seed
+  res_100 <- snow::clusterApply(cl, 1:n_sims, function(x) {
+    seed_count <- x
+    source("functions.R")
+    n <- 100
+    res <- RunOneSimulation(n)
+    return(res)
+  }) 
+  
+  cat("n = 200\n")
+  
+  Sys.time() # get the time now, so you know when this is running
+  system.time({
+    cl <- snow::makeCluster(getOption("cl.cores", 14))
+    snow::clusterExport(cl, "n_sims")
+    snow::clusterSetupRNGstream (cl, seed=42) # set seed
+    res_200 <- snow::clusterApply(cl, 1:n_sims, function(x) {
+      seed_count <- x
+      source("functions.R")
+      n <- 200
+      res <- RunOneSimulation(n)
+      return(res)
+    }) 
+  })
+  
+  cat("n = 500\n")
+  print(Sys.time()) # get the time now, so you know when this is running
+  cl <- snow::makeCluster(getOption("cl.cores", 14))
+  snow::clusterExport(cl, "n_sims")
+  snow::clusterSetupRNGstream (cl, seed=42) # set seed
+  res_500 <- snow::clusterApply(cl, 1:n_sims, function(x) {
+    seed_count <- x
+    source("functions.R")
+    n <- 500
+    res <- RunOneSimulation(n)
+    return(res)
+  })
+  
+  cat("n = 1000\n")
+  Sys.time() # get the time now, so you know when this is running
+  system.time({
+    cl <- snow::makeCluster(getOption("cl.cores", 14))
+    snow::clusterExport(cl, "n_sims")
+    snow::clusterSetupRNGstream (cl, seed=42) # set seed
+    res_1000 <- snow::clusterApply(cl, 1:n_sims, function(x) {
+      seed_count <- x
+      source("functions.R")
+      n <- 1000
+      res <- RunOneSimulation(n)
+      return(res)
+    }) 
+  })
+  
+  
+  # save everything so we don't need to run that again
+  save(res_100, res_200, res_500, res_1000, 
+       file = "chis_calculated.RData", compress = FALSE) # ~5GB file
+}
+
+# if res_100 doesn't exist, we haven't run simulations
+# so load them.
+# This is a big file. It takes a while.
+if(!exists("res_100")) {
+  load("chis_calculated.RData")
+}
+
+# load data from CWF paper
+
+df_cwf_table_1 <- read.csv("Curran_table_1.csv")
+df_cwf_table_2 <- read.csv("Curran_table_2.csv")    
+df_cwf_table_3 <- read.csv("Curran_table_3.csv")    
+df_cwf_table_4 <- read.csv("Curran_table_4.csv")    
+
+
+```
+
+## Model Fit Comparison
+
+In this section we compare the model fit results we obtained with those
+presented in the CWF paper.
+
+### Model 1: Correct Specification
+
+```{r model_1_chi_square}
+#| cache: TRUE
+
+# This code block finds the mean chi-square, proportion of analyses that 
+# converged, and the proportion of models that were rejected (using p < 0.05).
+# Apologies to the reader. This could have been written much more succinctly.
+
+# Tables 1-4 have the same structure, and first two 
+# columns are the same so construct a base table
+base_table <- data.frame(
+  size = c(rep(100, 3), rep(200, 3),  rep(500, 3), rep(1000, 3)),
+  estimator = rep(c("ML", "SB", "ADF"), 4)
+)
+
+table_1a <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m1_dist1_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist1_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist1_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist1_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist1_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist1_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist1_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist1_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist1_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist1_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist1_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist1_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m1_dist1_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist1_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist1_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist1_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist1_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist1_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist1_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist1_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist1_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist1_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist1_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist1_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m1_dist1_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist1_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist1_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist1_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist1_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist1_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist1_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist1_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist1_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist1_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist1_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist1_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+
+# table 1b is the moderately non-normal dist part of table 1
+table_1b <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m1_dist2_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist2_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist2_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist2_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist2_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist2_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist2_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist2_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist2_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist2_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist2_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist2_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m1_dist2_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist2_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist2_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist2_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist2_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist2_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist2_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist2_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist2_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist2_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist2_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist2_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m1_dist2_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist2_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist2_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist2_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist2_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist2_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist2_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist2_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist2_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist2_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist2_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist2_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+# table 1c is the severely non-normal dist part of table 1
+table_1c <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m1_dist3_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist3_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m1_dist3_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist3_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist3_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m1_dist3_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist3_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist3_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m1_dist3_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist3_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist3_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m1_dist3_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m1_dist3_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist3_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m1_dist3_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist3_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist3_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m1_dist3_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist3_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist3_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m1_dist3_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist3_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist3_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m1_dist3_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m1_dist3_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist3_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m1_dist3_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist3_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist3_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m1_dist3_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist3_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist3_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m1_dist3_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist3_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist3_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m1_dist3_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+# Table 1
+# we are analyzing tables 1, 2, 3 and 4 by distribution ,
+# so we need to create sub-data frames from each of the 
+# original tables.
+df_cwf_table_1a <- 
+  df_cwf_table_1 %>%
+  dplyr::select(
+    estimator, d1_obs_chi, d1_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d1_perc_reject = d1_perc_reject / 100) %>%
+  dplyr::rename(
+    mean_observed_chi  = d1_obs_chi ,
+    size = N,
+    perc_reject = d1_perc_reject
+  )
+
+df_cwf_table_1b <- 
+  df_cwf_table_1 %>%
+  dplyr::select(
+    estimator, d2_obs_chi, d2_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d2_perc_reject = d2_perc_reject / 100
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d2_obs_chi ,
+    size = N,
+    perc_reject = d2_perc_reject
+  )
+
+df_cwf_table_1c <- 
+  df_cwf_table_1 %>%
+  dplyr::select(
+    estimator, d3_obs_chi, d3_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d3_perc_reject  = d3_perc_reject / 100,
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d3_obs_chi ,
+    perc_reject  = d3_perc_reject,
+    size = N
+  )
+
+# Combine CWF Table 1a and current Table 1a
+df_table_1a <- dplyr::bind_rows(
+  table_1a, df_cwf_table_1a
+)
+df_table_1b<- dplyr::bind_rows(
+  table_1b, df_cwf_table_1b
+)
+df_table_1c <- dplyr::bind_rows(
+  table_1c, df_cwf_table_1c
+)
+
+# Try combining all 
+df_table_1 <- df_table_1a %>%
+  dplyr::mutate(distribution = "a: Normal") %>%
+  dplyr::full_join(
+    df_table_1b %>% dplyr::mutate(distribution = "b: Moderately non-normal")    
+  ) %>% 
+  dplyr::full_join(
+    df_table_1c %>% dplyr::mutate(distribution = "c: Severely non-normal")    
+  )
+
+
+
+
+```
+
+@fig-plot_chi_1 shows the mean chi-squares obtained in the CWF paper and the
+current simulation. The values for the ML and SB chi-squares are very similar.
+However the ADF/WLS estimates are discrepant, and the discrepancy is larger with
+smaller sample sizes and greater departure from normality. At sample sizes 500
+and above the chi-square differences are all around 1 point or less, but at
+smaller sample sizes, the differences increase. In the sample size of 100, when
+the distribution is normal, the difference in chi-squares is 3.6, with
+moderately non-normal it is 7.2 and severely non-normal the difference increases
+to 15.6. the
+
+```{r plot_table_1_chi, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_chi_1
+#| fig-cap: "Model 1: Correct Specification. Mean chi-square values obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_1, source == "cwf"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_1, source == "current"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Mean Observed Chi-Square") +
+  scale_y_continuous(limits = c(20, 52), breaks = seq(20, 52, by = 4))
+
+
+```
+
+The story is repeated when we consider rejection rates, shown in
+@fig-plot_rejects_1. Proportion of models were p \< 0.05 is very similar for ML
+and SB, but there are quite dramatic differences in rejection rates for ADF/WLS
+at smaller samples, with CWF finding higher rejection rates with small samples,
+and this difference increases as the degree of non-normality increases.
+
+```{r plot_table_1_rejects, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_rejects_1
+#| fig-cap: "Model 1: Correct Specification. Proportion of models where p < 0.05 obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_1, source == "cwf"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_1, source == "current"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Proportion of Models Where p < 0.05") +
+  scale_y_continuous(limits = c(0, 0.7), breaks = seq(0, 0.7, by = 0.05))
+
+
+```
+
+### Model 2: Inclusion Misspecification
+
+```{r model_2_chi_square}
+#| cache: TRUE
+
+# This code block finds the mean chi-square, proportion of analyses that 
+# converged, and the proportion of models that were rejected (using p < 0.05).
+# Apologies to the reader. This could have been written much more succinctly.
+
+
+table_2a <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m2_dist1_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist1_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist1_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist1_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist1_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist1_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist1_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist1_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist1_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist1_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist1_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist1_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m2_dist1_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist1_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist1_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist1_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist1_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist1_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist1_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist1_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist1_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist1_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist1_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist1_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m2_dist1_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist1_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist1_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist1_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist1_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist1_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist1_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist1_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist1_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist1_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist1_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist1_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+
+# table 1b is the moderately non-normal dist part of table 1
+table_2b <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m2_dist2_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist2_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist2_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist2_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist2_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist2_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist2_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist2_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist2_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist2_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist2_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist2_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m2_dist2_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist2_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist2_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist2_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist2_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist2_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist2_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist2_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist2_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist2_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist2_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist2_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m2_dist2_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist2_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist2_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist2_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist2_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist2_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist2_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist2_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist2_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist2_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist2_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist2_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+# table 1c is the severely non-normal dist part of table 1
+table_2c <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m2_dist3_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist3_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m2_dist3_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist3_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist3_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m2_dist3_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist3_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist3_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m2_dist3_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist3_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist3_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m2_dist3_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m2_dist3_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist3_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m2_dist3_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist3_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist3_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m2_dist3_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist3_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist3_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m2_dist3_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist3_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist3_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m2_dist3_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m2_dist3_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist3_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m2_dist3_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist3_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist3_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m2_dist3_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist3_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist3_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m2_dist3_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist3_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist3_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m2_dist3_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+# Table 1
+# we are analyzing tables 1, 2, 3 and 4 by distribution ,
+# so we need to create sub-data frames from each of the 
+# original tables.
+df_cwf_table_2a <- 
+  df_cwf_table_2 %>%
+  dplyr::select(
+    estimator, d1_obs_chi, d1_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d1_perc_reject = d1_perc_reject / 100) %>%
+  dplyr::rename(
+    mean_observed_chi  = d1_obs_chi ,
+    size = N,
+    perc_reject = d1_perc_reject
+  )
+
+df_cwf_table_2b <- 
+  df_cwf_table_2 %>%
+  dplyr::select(
+    estimator, d2_obs_chi, d2_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d2_perc_reject = d2_perc_reject / 100
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d2_obs_chi ,
+    size = N,
+    perc_reject = d2_perc_reject
+  )
+
+df_cwf_table_2c <- 
+  df_cwf_table_2 %>%
+  dplyr::select(
+    estimator, d3_obs_chi, d3_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d3_perc_reject  = d3_perc_reject / 100,
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d3_obs_chi ,
+    perc_reject  = d3_perc_reject,
+    size = N
+  )
+
+# Combine CWF Table 1a and current Table 1a
+df_table_2a <- dplyr::bind_rows(
+  table_2a, df_cwf_table_2a
+)
+df_table_2b<- dplyr::bind_rows(
+  table_2b, df_cwf_table_2b
+)
+df_table_2c <- dplyr::bind_rows(
+  table_2c, df_cwf_table_2c
+)
+
+# Try combining all 
+df_table_2 <- df_table_2a %>%
+  dplyr::mutate(distribution = "a: Normal") %>%
+  dplyr::full_join(
+    df_table_2b %>% dplyr::mutate(distribution = "b: Moderately non-normal")    
+  ) %>% 
+  dplyr::full_join(
+    df_table_2c %>% dplyr::mutate(distribution = "c: Severely non-normal")    
+  )
+
+
+
+
+```
+
+@fig-plot_chi_2 shows the mean chi-squares obtained in the CWF paper and the
+current simulation for model 2 (which had a misspecification of inclusion). These results are substantively equivalent to those for model 1: SB and ML are similar, ADF/WLS is larger in CWF, and the differences are larger with smaller sample sizes and greater deviation from normality.
+
+```{r plot_table_2_chi, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_chi_2
+#| fig-cap: "Model 1: Correct Specification. Mean chi-square values obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_2, source == "cwf"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_2, source == "current"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Mean Observed Chi-Square") +
+  scale_y_continuous(limits = c(20, 52), breaks = seq(20, 52, by = 4))
+
+
+```
+
+Differences in rejection rates for model 2 reflect those of model 1, as shown in 
+@fig-plot_rejects_2. Rejection rates were found to be higher in the CWF paper than in the current simulation, for small samples and deviation from normality.
+
+```{r plot_table_2_rejects, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_rejects_2
+#| fig-cap: "Model 2: Correct Specification. Proportion of models where p < 0.05 obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_2, source == "cwf"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_2, source == "current"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Proportion of Models Where p < 0.05") +
+  scale_y_continuous(limits = c(0, 0.7), breaks = seq(0, 0.7, by = 0.05))
+
+
+```
+
+
+
+
+
+
+
+
+
+### Model 3: Exclusion Misspecification
+
+```{r model_3_chi_square}
+#| cache: TRUE
+
+# This code block finds the mean chi-square, proportion of analyses that 
+# converged, and the proportion of models that were rejected (using p < 0.05).
+# Apologies to the reader. This could have been written much more succinctly.
+
+
+table_3a <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m3_dist1_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist1_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist1_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist1_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist1_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist1_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist1_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist1_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist1_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist1_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist1_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist1_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m3_dist1_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist1_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist1_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist1_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist1_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist1_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist1_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist1_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist1_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist1_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist1_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist1_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m3_dist1_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist1_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist1_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist1_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist1_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist1_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist1_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist1_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist1_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist1_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist1_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist1_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+
+# table 1b is the moderately non-normal dist part of table 1
+table_3b <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m3_dist2_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist2_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist2_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist2_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist2_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist2_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist2_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist2_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist2_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist2_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist2_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist2_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m3_dist2_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist2_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist2_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist2_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist2_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist2_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist2_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist2_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist2_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist2_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist2_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist2_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m3_dist2_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist2_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist2_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist2_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist2_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist2_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist2_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist2_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist2_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist2_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist2_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist2_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+# table 1c is the severely non-normal dist part of table 1
+table_3c <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m3_dist3_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist3_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m3_dist3_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist3_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist3_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m3_dist3_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist3_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist3_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m3_dist3_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist3_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist3_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m3_dist3_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m3_dist3_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist3_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m3_dist3_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist3_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist3_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m3_dist3_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist3_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist3_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m3_dist3_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist3_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist3_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m3_dist3_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m3_dist3_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist3_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m3_dist3_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist3_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist3_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m3_dist3_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist3_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist3_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m3_dist3_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist3_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist3_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m3_dist3_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+# Table 1
+# we are analyzing tables 1, 2, 3 and 4 by distribution ,
+# so we need to create sub-data frames from each of the 
+# original tables.
+df_cwf_table_3a <- 
+  df_cwf_table_3 %>%
+  dplyr::select(
+    estimator, d1_obs_chi, d1_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d1_perc_reject = d1_perc_reject / 100) %>%
+  dplyr::rename(
+    mean_observed_chi  = d1_obs_chi ,
+    size = N,
+    perc_reject = d1_perc_reject
+  )
+
+df_cwf_table_3b <- 
+  df_cwf_table_3 %>%
+  dplyr::select(
+    estimator, d2_obs_chi, d2_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d2_perc_reject = d2_perc_reject / 100
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d2_obs_chi ,
+    size = N,
+    perc_reject = d2_perc_reject
+  )
+
+df_cwf_table_3c <- 
+  df_cwf_table_3 %>%
+  dplyr::select(
+    estimator, d3_obs_chi, d3_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d3_perc_reject  = d3_perc_reject / 100,
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d3_obs_chi ,
+    perc_reject  = d3_perc_reject,
+    size = N
+  )
+
+# Combine CWF Table 1a and current Table 1a
+df_table_3a <- dplyr::bind_rows(
+  table_3a, df_cwf_table_3a
+)
+df_table_3b<- dplyr::bind_rows(
+  table_3b, df_cwf_table_3b
+)
+df_table_3c <- dplyr::bind_rows(
+  table_3c, df_cwf_table_3c
+)
+
+# Try combining all 
+df_table_3 <- df_table_3a %>%
+  dplyr::mutate(distribution = "a: Normal") %>%
+  dplyr::full_join(
+    df_table_3b %>% dplyr::mutate(distribution = "b: Moderately non-normal")    
+  ) %>% 
+  dplyr::full_join(
+    df_table_3c %>% dplyr::mutate(distribution = "c: Severely non-normal")    
+  )
+
+
+
+
+```
+
+@fig-plot_chi_3 shows the mean chi-squares obtained in the CWF paper and the
+current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes. 
+
+```{r plot_table_3_chi, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_chi_3
+#| fig-cap: "Model 3: Incorrect Specification  Exclusion. Mean chi-square values obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_3, source == "cwf"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_3, source == "current"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Mean Observed Chi-Square") +
+  scale_y_continuous(limits = c(20, 200), breaks = seq(20, 200, by = 10))
+
+
+```
+
+The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in
+@fig-plot_rejects_3. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large. 
+
+```{r plot_table_3_rejects, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_rejects_3
+#| #| fig-cap: "Model 3: Incorrect specification - exclusion. Proportion of models where p < 0.05 obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_3, source == "cwf"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_3, source == "current"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Proportion of Models Where p < 0.05") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.05))
+
+
+```
+
+
+
+
+
+
+### Model 4: Exclusion and Inclusion Misspecification
+
+```{r model_4_chi_square}
+#| cache: TRUE
+
+# This code block finds the mean chi-square, proportion of analyses that 
+# converged, and the proportion of models that were rejected (using p < 0.05).
+# Apologies to the reader. This could have been written much more succinctly.
+
+
+table_4a <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m4_dist1_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist1_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist1_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist1_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist1_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist1_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist1_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist1_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist1_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist1_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist1_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist1_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m4_dist1_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist1_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist1_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist1_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist1_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist1_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist1_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist1_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist1_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist1_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist1_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist1_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m4_dist1_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist1_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist1_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist1_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist1_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist1_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist1_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist1_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist1_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist1_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist1_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist1_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+
+# table 1b is the moderately non-normal dist part of table 1
+table_4b <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m4_dist2_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist2_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist2_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist2_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist2_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist2_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist2_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist2_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist2_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist2_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist2_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist2_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m4_dist2_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist2_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist2_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist2_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist2_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist2_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist2_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist2_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist2_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist2_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist2_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist2_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m4_dist2_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist2_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist2_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist2_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist2_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist2_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist2_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist2_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist2_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist2_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist2_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist2_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+
+# table 1c is the severely non-normal dist part of table 1
+table_4c <- base_table %>%
+  # Normal
+  dplyr::mutate(
+    mean_observed_chi = 
+      c(
+        GetMeanChi(res_100, "fit_m4_dist3_ml")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist3_sb")$mean_chi,
+        GetMeanChi(res_100, "fit_m4_dist3_wls")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist3_ml")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist3_sb")$mean_chi,
+        GetMeanChi(res_200, "fit_m4_dist3_wls")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist3_ml")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist3_sb")$mean_chi,
+        GetMeanChi(res_500, "fit_m4_dist3_wls")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist3_ml")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist3_sb")$mean_chi,
+        GetMeanChi(res_1000, "fit_m4_dist3_wls")$mean_chi
+      ),
+    perc_reject = c(
+      GetMeanChi(res_100, "fit_m4_dist3_ml")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist3_sb")$reject_rate,
+      GetMeanChi(res_100, "fit_m4_dist3_wls")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist3_ml")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist3_sb")$reject_rate,
+      GetMeanChi(res_200, "fit_m4_dist3_wls")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist3_ml")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist3_sb")$reject_rate,
+      GetMeanChi(res_500, "fit_m4_dist3_wls")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist3_ml")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist3_sb")$reject_rate,
+      GetMeanChi(res_1000, "fit_m4_dist3_wls")$reject_rate
+    ),
+    perc_converged = c(
+      GetMeanChi(res_100, "fit_m4_dist3_ml")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist3_sb")$prop_converged,
+      GetMeanChi(res_100, "fit_m4_dist3_wls")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist3_ml")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist3_sb")$prop_converged,
+      GetMeanChi(res_200, "fit_m4_dist3_wls")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist3_ml")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist3_sb")$prop_converged,
+      GetMeanChi(res_500, "fit_m4_dist3_wls")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist3_ml")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist3_sb")$prop_converged,
+      GetMeanChi(res_1000, "fit_m4_dist3_wls")$prop_converged
+    ),
+    source = "current"
+  ) 
+
+# Table 1
+# we are analyzing tables 1, 2, 3 and 4 by distribution ,
+# so we need to create sub-data frames from each of the 
+# original tables.
+df_cwf_table_4a <- 
+  df_cwf_table_4 %>%
+  dplyr::select(
+    estimator, d1_obs_chi, d1_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d1_perc_reject = d1_perc_reject / 100) %>%
+  dplyr::rename(
+    mean_observed_chi  = d1_obs_chi ,
+    size = N,
+    perc_reject = d1_perc_reject
+  )
+
+df_cwf_table_4b <- 
+  df_cwf_table_4 %>%
+  dplyr::select(
+    estimator, d2_obs_chi, d2_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d2_perc_reject = d2_perc_reject / 100
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d2_obs_chi ,
+    size = N,
+    perc_reject = d2_perc_reject
+  )
+
+df_cwf_table_4c <- 
+  df_cwf_table_4 %>%
+  dplyr::select(
+    estimator, d3_obs_chi, d3_perc_reject, N
+  ) %>%
+  dplyr::mutate(
+    source = "cwf",
+    d3_perc_reject  = d3_perc_reject / 100,
+  ) %>%
+  dplyr::rename(
+    mean_observed_chi  = d3_obs_chi ,
+    perc_reject  = d3_perc_reject,
+    size = N
+  )
+
+# Combine CWF Table 1a and current Table 1a
+df_table_4a <- dplyr::bind_rows(
+  table_4a, df_cwf_table_4a
+)
+df_table_4b<- dplyr::bind_rows(
+  table_4b, df_cwf_table_4b
+)
+df_table_4c <- dplyr::bind_rows(
+  table_4c, df_cwf_table_4c
+)
+
+# Try combining all 
+df_table_4 <- df_table_4a %>%
+  dplyr::mutate(distribution = "a: Normal") %>%
+  dplyr::full_join(
+    df_table_4b %>% dplyr::mutate(distribution = "b: Moderately non-normal")    
+  ) %>% 
+  dplyr::full_join(
+    df_table_4c %>% dplyr::mutate(distribution = "c: Severely non-normal")    
+  )
+
+
+
+
+```
+
+@fig-plot_chi_3 shows the mean chi-squares obtained in the CWF paper and the
+current simulation for model 3 (which had a misspecification of exclusion). Here we see larger differences between the current simulation and those presented in CWF. The CWF paper has larger average chi-squares than we found, but this difference is consistent for all three estimators, but larger for the ADF/WLS estimator than ML and SB. Unlike the previous models, the discrepancies are also larger in larger sample sizes. 
+
+```{r plot_table_4_chi, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_chi_4
+#| fig-cap: "Model 4: Incorrect Specification - Exclusion + Inclusion. Mean chi-square values obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_4, source == "cwf"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_4, source == "current"), 
+    aes(x = factor(size), y = mean_observed_chi, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Mean Observed Chi-Square") +
+  scale_y_continuous(limits = c(20, 160), breaks = seq(20, 160, by = 10))
+
+
+```
+
+The differences in rejection rates for model 3 are consistent with the differences chi-square statistics, and can be seen in
+@fig-plot_rejects_3. At larger sample sizes the rejection rates essentially asymptote at 1, hence differences are not seen, but at smaller sample sizes the discrepancies between the models is large. 
+
+```{r plot_table_4_rejects, echo = FALSE}
+#| cache: TRUE
+#| label: fig-plot_rejects_4
+#| #| fig-cap: "Model 4: Incorrect specification - exclusion + inclusion. Proportion of models where p < 0.05 obtained from three estimators in CWF paper and current simulation"
+
+ggplot2::ggplot() +
+  geom_point(
+    data = subset(df_table_4, source == "cwf"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  geom_point(
+    data = subset(df_table_4, source == "current"), 
+    aes(x = factor(size), y = perc_reject, 
+        color = source, shape = estimator),
+    position = position_dodge(width = 0.5), size = 3) +
+  facet_grid(. ~ distribution) +
+  xlab("Sample Size") + 
+  ylab("Proportion of Models Where p < 0.05") +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, by = 0.05))
+
+```
+
+## Expected Values of Chi-Square
+
+The Satorra-Saris [@satorra1985power] method can be used to calculate the expected value of chi-square, given ML estimation and normally distributed data. For models 1 and 2 this value is trivial to calculate, as the models are correctly specified (or when they are incorrect, the error is one of inclusion) hence the expected chi-square values are equal to the degrees of freedom in the model.  For models 3 and 4 we calculate the expected values of chi-square using the Satorra-Saris method (which is described in more detail in CWF). 
+
+The expected values that we calculate are consistently lower than the expected values calculated by CWF. It appears that for each simulation (this one, and CWF), the expected values of chi-square are a closer match to the mean observed value. For example, for Model 3, sample size 100, the current study's calculated expected value of chi-square is 36.45 and the mean observed value is 36.84; for CWF, the expected value is 37.62 and the observed is 38.45. For model 4, sample size 1000, current study expected: 110.44, observed 111.37, for CWF the values are 128.20 and 128.71.
+
+
+
+```{r expected_chis_table, echo=FALSE}
+#| cache: TRUE
+#| label: tbl-expected_chis
+#| tbl-cap: "Expected values of chi-square for models 3 and 4 in current study and CWF"
+
+df_chis <- data.frame(n = c(100, 200, 500, 1000))
+df_chis$`Model 3: Current Study` <- c(
+  GetChi(fit_3_100)[["chisq"]] + 24,
+  GetChi(fit_3_200)[["chisq"]] + 24,
+  GetChi(fit_3_500)[["chisq"]] + 24,
+  GetChi(fit_3_1000)[["chisq"]] + 24
+)
+df_chis$`Model 3: CWF` <- c(
+  37.62, 51.38, 92.66, 161.35
+)
+df_chis$`Model 4: Current Study` <- c(
+  GetChi(fit_4_100)[["chisq"]] + 22,
+  GetChi(fit_4_200)[["chisq"]] + 22,
+  GetChi(fit_4_500)[["chisq"]] + 22,
+  GetChi(fit_4_1000)[["chisq"]] + 22
+)
+df_chis$`Model 4: CWF` <- c(
+  32.52, 43.14, 75.04, 128.20
+)
+knitr::kable(df_chis, digits = 2)
+```
+
+One possible explanation for this discrepancy is that the error variances were misreported in Figure 1 of CWF. Figure 1 of CWF shows that each of the measured variables has a residual variance of 0.51 in both the model with and without the cross loadings. If this is the case, when the cross loading is added to the model, the variance of the item must increase. 
+
+The CFA model presented in Figure 1 of the paper suggests that in the population models without cross loadings, the variance of all items is 1.00, but in the models with cross loadings, the variance of items 6 and 7 increases to 1.269, while all of the other items have variances equal to 1. 
+
+To test this hypothesis, we modified the population model so that the residual variances of items 6 and 7 were not 0.51 in the population model, but were 0.25. This change meant that the implied variances of all of the items was 1.00.  The path diagram, drawn from the model, is shown in @fig-pop_model_new, and the calculated expected values of chi-square from the modified model alongside the values presented in CWF are shown in @tbl-expected_chis_modified.
+
+
+```{r new_pop_models, echo = FALSE}
+#|cache: TRUE
+new_dgp_model_cross_loadings <- '
+  # data used for models 1 and 2
+  # loadings
+  f1 =~ 0.7 * y1 + 0.7 * y2 + 0.7 * y3
+  f2 =~ 0.7 * y4 + 0.7 * y5 + 0.7 * y6
+  f3 =~ 0.7 * y7 + 0.7 * y8 + 0.7 * y9
+  f2 =~ 0.35 * y7
+  f3 =~ 0.35 * y6
+  # factor variances
+  f1 ~~ 1 * f1
+  f2 ~~ 1 * f2
+  f3 ~~ 1 * f3
+  # factor covariances
+  f1 ~~ 0.3 * f2
+  f1 ~~ 0.3 * f3
+  f2 ~~ 0.3 * f3
+  # measured variable error variances
+  y1 ~~ 0.51 * y1
+  y2 ~~ 0.51 * y2
+  y3 ~~ 0.51 * y3
+  y4 ~~ 0.51 * y4
+  y5 ~~ 0.51 * y5
+  y6 ~~ 0.25 * y6
+  y7 ~~ 0.25 * y7
+  y8 ~~ 0.51 * y8
+  y9 ~~ 0.51 * y9
+  '
+```
+
+
+
+```{r new_models, echo=FALSE}
+#| cache: TRUE
+#| label: fig-pop_model_new
+#| fig-cap: "Path diagram for population model with cross loadings and modified residual variance"
+
+mat_empty <- rep(0, 81) %>% matrix(nrow = 9)
+diag(mat_empty) <- 1
+colnames(mat_empty) <- rownames(mat_empty) <- paste0("y", 1:9)
+# 2. Fit the population model
+fit_new_pop <- lavaan::cfa(
+  new_dgp_model_cross_loadings, sample.cov = mat_empty, sample.nobs = 1000
+)
+
+
+semPaths(
+  fit_new_pop, 
+  what = "est", 
+  edge.color = "black",
+  style = "lisrel",
+  fixedStyle = c("black", 1)
+  )
+
+```
+
+```{r }
+#| label: tbl-expected_chis_modified
+#| tbl-cap: "Expected values of chi-square for models 3 and 4 in current study and CWF"
+
+pop_cov_new_cross_loadings <- fitted(fit_new_pop)
+
+fit_3_100_new <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 100
+)
+fit_3_200_new <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 200
+)
+fit_3_500_new <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 500
+)
+fit_3_1000_new <- lavaan::cfa(
+  model_3, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 1000
+)
+
+fit_4_100_new <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 100
+)
+fit_4_200_new <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 200
+)
+fit_4_500_new <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 500
+)
+fit_4_1000_new <- lavaan::cfa(
+  model_4, sample.cov = pop_cov_new_cross_loadings, sample.nobs = 1000
+)
+
+df_chis_new <- data.frame(n = c(100, 200, 500, 1000))
+df_chis_new$`Model 3: Modified` <- c(
+  GetChi(fit_3_100_new)[["chisq"]] + 24,
+  GetChi(fit_3_200_new)[["chisq"]] + 24,
+  GetChi(fit_3_500_new)[["chisq"]] + 24,
+  GetChi(fit_3_1000_new)[["chisq"]] + 24
+)
+df_chis_new$`Model 3: CWF` <- c(
+  37.62, 51.38, 92.66, 161.35
+)
+df_chis_new$`Model 4: Modified` <- c(
+  GetChi(fit_4_100_new)[["chisq"]] + 22,
+  GetChi(fit_4_200_new)[["chisq"]] + 22,
+  GetChi(fit_4_500_new)[["chisq"]] + 22,
+  GetChi(fit_4_1000_new)[["chisq"]] + 22
+)
+df_chis_new$`Model 4: CWF` <- c(
+  32.52, 43.14, 75.04, 128.20
+)
+
+knitr::kable(df_chis_new, digits = 2)
+
+```
+
+# Discussion
+
+In this paper we replicated, as precisely as possible, a simulation study originally presented by @curran1996robustness. Where the data generation and analysis was done using EQS 3.0, we used the R packages simsem and Lavaan. 
+
+Overall, our results were substantively similar and the conclusions about the appropriateness of the different estimators would not have been altered by the differences between our results.
+
+However, there were consistent differences between the results, which were intriguing. The chi-square values obtained in the original paper were consistently higher than the results that we obtained, for almost all estimators at all sample sizes. When we compared the expected chi-squares, which are calculation based, not simulation based, these differences remained - the expected chi-square values of Curran, et al, were similar to the obtained chi-square values that they found via simulation. The expected chi-square values that we calculated were more similar to the obtained chi-square values that we found via simulation.
+
+We believe that this difference may be due to an error in the presentation in a figure in the table. Residual variances were possibly erroneously reported as being equal in all models, where in models with cross loadings, these residual variances may have been reduced. The change in residual variance is easy to overlook as this is not a part of the model that one is generally particularly interested in, and we rarely make or test hypotheses about the estimates of residual variances. 
+
+However, this exercise leads us to some conclusions. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information. 
+
+In this paper we have used the semPlot package [@EpskampSemPlot] to draw path diagrams based on the models that we fitted. Although we believe that we can draw path diagrams that are more esthetically pleasing using other programs, the use of semPlot (or similar software) which takes the fitted model as input and draws output ensures that the path diagram matches the models. 
+
+Finally, the experience of carrying out this work has shown that, for us at least, it is very difficult to fully evaluate a simulation study by reading it, and not replicating it. The authors of CWF acknowledge both Peter Bentler and Douglas Bonett - SEM practitioners and researchers that one would generally defer to, but it appears that neither of these researchers noted the omission of the change in the residual variances. In addition, if any of the 7000+ authors who have cited this paper have made this connection, it has not been brought to our attention. 
+
+
+
+# References
