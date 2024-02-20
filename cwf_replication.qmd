@@ -1,8 +1,7 @@
 ---
 title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
-
 format: 
-  html:
+  pdf:
     fig-pos: "H"
 bibliography: citations.bib
 csl: apa-5th-edition.csl
@@ -24,6 +23,10 @@ jeremy.miles\@gmail.com
 ^2^University of Southern California, USA; alex\@milesfamily.name
 
 ^3^University of Ulster, UK; m.shevlin\@ulster.ac.uk
+
+The latest version of this document can be found in html format here: https://jeremymiles.github.io/cwf_replication//cwf_replication.html or pdf format: https://jeremymiles.github.io/cwf_replication//cwf_replication.pdf.
+
+All code and other files to generate this document can be found at: https://github.com/jeremymiles/cwf_replication
 
 There have been recent calls for researchers in social science methodological
 research to consider replication as an This paper reports on a replication of
@@ -547,7 +550,7 @@ if(!file.exists("chis_calculated.RData")) {
   
   cat("n = 200\n")
   
-  Sys.time() # get the time now, so you know when this is running
+  print(Sys.time()) # get the time now, so you know when this is running
   system.time({
     cl <- snow::makeCluster(getOption("cl.cores", 14))
     snow::clusterExport(cl, "n_sims")
