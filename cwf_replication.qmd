@@ -1,8 +1,10 @@
+
 ---
 title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
 format: 
-  pdf:
+  html:
     fig-pos: "H"
+    embed-resources: true
 bibliography: citations.bib
 csl: apa-5th-edition.csl
 editor: 
@@ -11,33 +13,45 @@ editor:
   references: 
     location: block
 author:
-  - name: Jeremy Miles^1^
-  - name: Alexander Miles^2^
-  - name: Mark Shevlin^3^
+  - name: Jeremy Miles
+    email: jeremy.miles@gmail.com
+    affiliations:
+      - name: Google Inc, Los Angeles
+        city: Los Angeles
+      - id: USC
+        name: University of Southern California, Los Angeles
+        city: Los Angeles
+  - name: Alexander Miles
+    email: alex@milesfamily.name
+    affiliations:
+      - ref: USC
+  - name: Mark Shevlin
+    email: m.shevlin@ulster.ac.uk
+    affiliations:
+      - name: University of Ulster, N Ireland, UK
+date: today        
+filters:
+  - authors-block
+abstract: |
+  There have been recent calls for researchers in social science methodological
+  research to consider replication as an This paper reports on a replication of
+  @curran1996robustness, using more recently developed, open source 
+  software (the simsem and lavaan packages in R). The results that we obtain
+  are substantively equivalent to the results obtained in the original paper,   
+  but some minor discrepancies were found, and we discuss the possible reasons. 
+  We conclude with an argument that replication of simulation studies can be   
+  useful and informative, and thanks to the rise of open source analysis 
+  software, websites
+  that increase ability to share code and improvements in computer hardware, 
+  the costs of replication are dramatically reduced.
 page-layout: article
+license: "CC BY"
+funding: "The authors received no specific funding for this work."
+
+thanks: All code to generate this document is available at github.com/jeremymiles/cwf_replication (and this document at jeremymiles.github.io/cwf_replication//cwf_replication.pdf or jeremymiles.github.io/cwf_replication//cwf_replication.html)
+cache: false
 ---
 
-^1^Google, Los Angeles, USA and University of Southern California, USA;
-jeremy.miles\@gmail.com
-
-^2^University of Southern California, USA; alex\@milesfamily.name
-
-^3^University of Ulster, UK; m.shevlin\@ulster.ac.uk
-
-The latest version of this document can be found in html format here: https://jeremymiles.github.io/cwf_replication//cwf_replication.html or pdf format: https://jeremymiles.github.io/cwf_replication//cwf_replication.pdf.
-
-All code and other files to generate this document can be found at: https://github.com/jeremymiles/cwf_replication
-
-There have been recent calls for researchers in social science methodological
-research to consider replication as an This paper reports on a replication of
-@curran1996robustness, using more recently developed, open source software (the
-simsem and Lavaan packages in R). The results that we obtain are substantively
-equivalent to the results obtained in the original paper, but some minor
-discrepancies were found, and we discuss the possible reasons. We conclude with
-an argument that replication of simulation studies can be useful and
-informative, and thanks to the rise of open source analysis software, websites
-that increase ability to share code and improvements in computer hardware, the
-costs of replication are dramatically reduced.
 
 # Introduction
 
@@ -84,7 +98,7 @@ discoverable if the code is available, which it frequently is not. In
 addition, the code runs on more software - even if the code that I use is
 accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might
 not be. For example, @rigdon1991performance found that the performance of
-LISREL's WLS estimation method was not producing consistent estimation.
+LISREL's WLS estimation method was not producing consistent estimation; LISREL 8.8 made errors in the calculation of the Satorra-Bentler chi-square;  AMOS v4.0 estimated means and intercepts, and constrained these to zero by default - making the null model extremely poor, and therefore incremental fit indices looked very, very good. 
 
 6.  Every scenario cannot be simulated. A simulation study samples a specific
 parameter space. An analyst then tries to extrapolate to the particular
@@ -114,7 +128,7 @@ To their list, we add one more. Replications are frequently software dependent.
 If we find differences across software implementations, we do not need to
 suggest that the authors of (complex) statistical analysis software have made
 errors. Optimization algorithms improve, random number generators differ,
-default convergence criteria might change.
+default convergence criteria might change. That said, errors are sometimes discovered in 
 
 The replication crisis has made the importance of openness of code and data more
 relevant, but the internet has made openness possible. Researchers can now
@@ -149,8 +163,7 @@ grounds that if we need to ask, we can't afford it, we didn't ask. (Our total
 funding for this project is \$0).
 
 Instead of using EQS we used open source software: data were generated using the
-R package simsem @simsem and lavaan @lavaan. The code is available on Github
-(https://github.com/jeremymiles/cwf_replication)
+R package simsem @simsem and lavaan @lavaan. 
 
 The aim of this paper is to, as closely as possible, replicate the analysis
 carried out in the CWF paper, and determine the extent to which the results are
@@ -2054,14 +2067,14 @@ knitr::kable(mean_convergence, digits = 1)
 
 In this paper we replicated, as precisely as possible, a simulation study
 originally presented by @curran1996robustness. Where the data generation and
-analysis was done using EQS 3.0, we used the R packages simsem and Lavaan.
+analysis was done using EQS 3.0, we used the R packages simsem and lavaan.
 
 Overall, our results were substantively similar and the conclusions about the
 appropriateness of the different estimators would not have been altered by the
 differences between our results.
 
 One difference that stands out is the performance of the ADF/WLS estimator in
-smaller samples. The simulations run in Lavaan have lower chi-squares and lower
+smaller samples. The simulations run in lavaan have lower chi-squares and lower
 rejection rates than the simulations run in the CWF paper. These differences
 increase as the distributions deviate further from normality. With model 1
 (correct model), normal distribution and N = 100, the mean observed ADF/WLS
@@ -2069,7 +2082,9 @@ chi-square is 32.9 in the current simulation, and 36.4 in the CWF paper, but for
 the severely non-normal data, the values are 29.2 and 44.8. However, with a
 sample size of 1000, the values for normal are 24.8 (current) and 25.8 (CWF);
 for severely non-normal 25.1 (current) and 25.5 (CWF). The ML and SB estimators
-of these models were very similar.  It is possible that difference in convergence rates might have resulted in these differences - if the ADF/WLS models with higher chi-square statistics failed to converge in Lavaan, but did converge in EQS, the resulting sample bias could skew these statistics. Altering the tolerance for convergence might reduce or eliminate these differences.
+of these models were very similar.  
+
+It is possible that difference in convergence rates might have resulted in these differences. The lavaan models converged at a much higher rate than the EQS models reported in CWF. EQS uses a Gauss-Newton method for optimization, lavaan (by default) uses a quasi-Newton approach. If the model fails to converge in lavaan, the program will attempt to refit, up to 4 times, with different starting values and scaling settings (Rosseel, personal communication). If the ADF/WLS models with higher chi-square statistics failed to converge in lavaan, but did converge in EQS, the resulting sample bias could skew these statistics. Altering the tolerance for convergence might reduce or eliminate these differences.
 
 A second difference between the results was also intriguing. The chi-square
 values obtained in the original paper were consistently higher than the results
@@ -2130,6 +2145,9 @@ defer to, but it appears that neither of these researchers noted the omission of
 the change in the residual variances. In addition, if any of the 7000+ authors
 who have cited this paper have made this connection, it has not been brought to
 our attention.
+
+# Acknowledgments
+We thank Preston Botter, Patrick Curran and Yves Rosseel for discussion and comments on different aspects of this paper. (And for catching our worst errors.)
 
 # References {.unnumbered}
 
