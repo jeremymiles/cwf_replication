@@ -16,7 +16,7 @@ author:
   - name: Jeremy Miles
     email: jeremy.miles@gmail.com
     affiliations:
-      - name: Google Inc, Los Angeles
+      - name: Google LLC, Los Angeles
         city: Los Angeles
       - id: USC
         name: University of Southern California, Los Angeles
