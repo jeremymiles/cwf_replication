@@ -2,7 +2,7 @@
 ---
 title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
 format: 
-  html:
+  pdf:
     fig-pos: "H"
     embed-resources: true
 bibliography: citations.bib
@@ -16,7 +16,7 @@ author:
   - name: Jeremy Miles
     email: jeremy.miles@gmail.com
     affiliations:
-      - name: Google LLC, Los Angeles
+      - name: Work done while the author was at Google
         city: Los Angeles
       - id: USC
         name: University of Southern California, Los Angeles
@@ -35,7 +35,7 @@ filters:
 abstract: |
   There have been recent calls for researchers in social science methodological
   research to consider replication as an This paper reports on a replication of
-  @curran1996robustness, using more recently developed, open source 
+  @curran1996robustness, a simulation study that used EQS 3.0 to generate random data and analyze it in a confirmatory factor analysis framework. We present a replication of this simulatlion using more recently developed, open source 
   software (the simsem and lavaan packages in R). The results that we obtain
   are substantively equivalent to the results obtained in the original paper,   
   but some minor discrepancies were found, and we discuss the possible reasons. 
@@ -51,7 +51,6 @@ funding: "The authors received no specific funding for this work."
 thanks: All code to generate this document is available at github.com/jeremymiles/cwf_replication (and this document at jeremymiles.github.io/cwf_replication//cwf_replication.pdf or jeremymiles.github.io/cwf_replication//cwf_replication.html)
 cache: false
 ---
-
 
 # Introduction
 
