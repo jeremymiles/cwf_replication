@@ -14,10 +14,8 @@ editor:
     location: block
 author:
   - name: Jeremy Miles
-    email: jeremy.miles@gmail.com
+    email: jeremy.miles@gmail.com*
     affiliations:
-      - name: Work done while the author was at Google
-        city: Los Angeles
       - id: USC
         name: University of Southern California, Los Angeles
         city: Los Angeles
@@ -48,9 +46,12 @@ page-layout: article
 license: "CC BY"
 funding: "The authors received no specific funding for this work."
 
-thanks: All code to generate this document is available at github.com/jeremymiles/cwf_replication (and this document at jeremymiles.github.io/cwf_replication//cwf_replication.pdf or jeremymiles.github.io/cwf_replication//cwf_replication.html)
+thanks: All code to generate this document is available at github.com/jeremymiles/cwf_replication (and this document at jeremymiles.github.io/cwf_replication//cwf_replication.pdf or jeremymiles.github.io/cwf_replication//cwf_replication.html) [Work done while the first author was at Google]
+
 cache: false
 ---
+
+
 
 # Introduction
 
