@@ -2084,7 +2084,15 @@ sample size of 1000, the values for normal are 24.8 (current) and 25.8 (CWF);
 for severely non-normal 25.1 (current) and 25.5 (CWF). The ML and SB estimators
 of these models were very similar.  
 
-It is possible that difference in convergence rates might have resulted in these differences. The lavaan models converged at a much higher rate than the EQS models reported in CWF. EQS uses a Gauss-Newton method for optimization, lavaan (by default) uses a quasi-Newton approach. If the model fails to converge in lavaan, the program will attempt to refit, up to 4 times, with different starting values and scaling settings (Rosseel, personal communication). If the ADF/WLS models with higher chi-square statistics failed to converge in lavaan, but did converge in EQS, the resulting sample bias could skew these statistics. Altering the tolerance for convergence might reduce or eliminate these differences.
+It is possible that difference in convergence rates might have resulted in these
+differences. The lavaan models converged at a much higher rate than the EQS 
+models reported in CWF. EQS uses a Gauss-Newton method for optimization, lavaan
+(by default) uses a quasi-Newton approach. If the model fails to converge in
+lavaan, the program will attempt to refit, up to 4 times, with different
+starting values and scaling settings (Rosseel, personal communication). If the
+ADF/WLS models with higher chi-square statistics failed to converge in lavaan,
+but did converge in EQS, the resulting sample bias could skew these statistics.
+Altering the tolerance for convergence might reduce or eliminate these differences.
 
 A second difference between the results was also intriguing. The chi-square
 values obtained in the original paper were consistently higher than the results
@@ -2136,6 +2144,15 @@ from a cloud provider, and a cost of around \$6 per hour, increase the speed by
 a factor of approximately 15. Our more serious point is that the hurdles that
 must be overcome to do this work are dramatically reduced, and the benefits are
 potentially high.
+
+@fairchild2024many also replicated the Curran, et al, paper in a thorough and 
+thoughtful investigation. They also found that the results were generally 
+consistent but with some differences. Specifically, they focused on the 
+data generation method for the non-normal distributions - which is not something
+that we considered in our investigation. They found that different data 
+generation methods for non-normal data led to different results. We cannot
+conclude that the differences that we found in this research are not due to
+data generation differences. 
 
 Finally, the experience of carrying out this work has shown that, for us at
 least, it is very difficult to fully evaluate a simulation study by reading it,
