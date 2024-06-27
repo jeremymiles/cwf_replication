@@ -2,7 +2,7 @@
 ---
 title: "The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication"
 format: 
-  pdf:
+  html5:
     fig-pos: "H"
     embed-resources: true
 bibliography: citations.bib
@@ -67,13 +67,13 @@ is no opportunity for p-hacking (in its many forms), we run the analysis and
 report the results. If we run the analysis again, we get the same results. It is
 perfectly replicable - no need for replication, no replication crisis.
 
-@lohmann2022s suggested that methodological researchers present 10 reasons that
-we should consider replicating simulation studies.
+@lohmann2022s  present 10 reasons that methodological researchers
+ should consider replicating simulation studies.
 
 1.  They can have a major impact. @hu1999cutoff has been cited, according to
 Google Scholar, over 113,000 times.
 
-2.  Simulation reseachers have conflicts of interest too. Although conventional
+2.  Simulation researchers have conflicts of interest too. Although conventional
 p-hacking would not be done in simulation studies, and could select the
 specific methods, sample sizes, etc to compare. Less honest researchers
 could even selectively choose random seeds that reflect their preferences.

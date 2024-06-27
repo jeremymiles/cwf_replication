@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jeremy Miles1, Alexander Miles1, and Mark Shevlin2">
-<meta name="dcterms.date" content="2024-06-07">
+<meta name="dcterms.date" content="2024-06-26">
 
 <title>The Robustness of Test Statistics to Nonnormality and Specification Error in Confirmatory Factor Analysis: A Replication</title>
 <style>
@@ -3072,7 +3072,7 @@ vertical-align: -.125em;
   <div class="quarto-title-meta-heading">Affiliations</div>
   
     <div class="quarto-title-meta-contents">
-    <p class="author">Jeremy Miles <a href="mailto:jeremy.miles@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+    <p class="author">Jeremy Miles <a href="mailto:jeremy.miles@gmail.com*" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
   </div>
   <div class="quarto-title-meta-contents">
         <p class="affiliation">
@@ -3103,7 +3103,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">June 7, 2024</p>
+      <p class="date">June 26, 2024</p>
     </div>
   </div>
   
@@ -3123,14 +3123,13 @@ vertical-align: -.125em;
 
 <p><sup>1</sup> University of Southern California, Los Angeles<br>
 <sup>2</sup> University of Ulster, N Ireland, UK</p>
-<p>[^note: Work done while the first author was at Google]</p>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>The replication crisis has provoked a great deal of soul searching in many branches of science, including psychology. However, methodologists have recently pointed out that concerns about the replication crisis have largely passed by the methodological community <span class="citation" data-cites="Schoenbrodt2023Reproducibility Strobl2023owls">(<a href="#ref-Schoenbrodt2023Reproducibility" role="doc-biblioref">Schoenbrodt, 2023</a>; <a href="#ref-Strobl2023owls" role="doc-biblioref">Strobl, 2023</a>)</span>. A widely used tool of methodological researchers is that of the simulation study - set up a population with a known data generating process (DGP), take a sample of specified size from that population, apply a statistical method and determine if the data generating process is discovered <span class="citation" data-cites="carsey2013monte">(<a href="#ref-carsey2013monte" role="doc-biblioref">Carsey &amp; Harden, 2013</a>)</span>. There is no opportunity for p-hacking (in its many forms), we run the analysis and report the results. If we run the analysis again, we get the same results. It is perfectly replicable - no need for replication, no replication crisis.</p>
-<p><span class="citation" data-cites="lohmann2022s">Lohmann, Astivia, Morris, &amp; Groenwold (<a href="#ref-lohmann2022s" role="doc-biblioref">2022</a>)</span> suggested that methodological researchers present 10 reasons that we should consider replicating simulation studies.</p>
+<p><span class="citation" data-cites="lohmann2022s">Lohmann, Astivia, Morris, &amp; Groenwold (<a href="#ref-lohmann2022s" role="doc-biblioref">2022</a>)</span> present 10 reasons that methodological researchers should consider replicating simulation studies.</p>
 <ol type="1">
 <li><p>They can have a major impact. <span class="citation" data-cites="hu1999cutoff">Hu &amp; Bentler (<a href="#ref-hu1999cutoff" role="doc-biblioref">1999</a>)</span> has been cited, according to Google Scholar, over 113,000 times.</p></li>
-<li><p>Simulation reseachers have conflicts of interest too. Although conventional p-hacking would not be done in simulation studies, and could select the specific methods, sample sizes, etc to compare. Less honest researchers could even selectively choose random seeds that reflect their preferences.</p></li>
+<li><p>Simulation researchers have conflicts of interest too. Although conventional p-hacking would not be done in simulation studies, and could select the specific methods, sample sizes, etc to compare. Less honest researchers could even selectively choose random seeds that reflect their preferences.</p></li>
 <li><p>Selective reporting. Simulation studies can include enormous numbers of combinations of parameters, leading to an explosion of parameters. <span class="citation" data-cites="hu1999cutoff">Hu &amp; Bentler (<a href="#ref-hu1999cutoff" role="doc-biblioref">1999</a>)</span> contains 8 pages of tables in the results section, and a further 23 pages of tables in the appendix. Most researchers (and readers) would prefer a more succinct paper.</p></li>
 <li><p>Differing audiences. Simulation studies are written, reviewed, and read primarily by methodological researchers. A replication may be aimed at substantive researchers who are less interested in the nuances of the techniques, and more interested in knowing which technique is most appropriate for their problem at hand.</p></li>
 <li><p>Code is written by (fallible) humans. The study may be designed, but the code needs to be written to match the design as described in the paper. <span class="citation" data-cites="schonbrodt2018corrigendum">Schonbrodt, Perugini, et al. (<a href="#ref-schonbrodt2018corrigendum" role="doc-biblioref">2018</a>)</span> discovered that the description of the study in their paper, and the accompanying code did not match. This is only discoverable if the code is available, which it frequently is not. In addition, the code runs on more software - even if the code that I use is accessible, the program that I run that code (SAS, EQS, Mplus, etc) on might not be. For example, <span class="citation" data-cites="rigdon1991performance">Rigdon &amp; Ferguson Jr (<a href="#ref-rigdon1991performance" role="doc-biblioref">1991</a>)</span> found that the performance of LISREL’s WLS estimation method was not producing consistent estimation; LISREL 8.8 made errors in the calculation of the Satorra-Bentler chi-square; AMOS v4.0 estimated means and intercepts, and constrained these to zero by default - making the null model extremely poor, and therefore incremental fit indices looked very, very good.</p></li>
@@ -4794,6 +4793,7 @@ Table 11: Percentage of models using each estimator that converged
 <p>However, this exercise leads to some more general conclusions, not specifically regarding this paper. Presenting a simulation study in sufficient detail in a conventional journal article that it can be replicated precisely is challenging - if authors do not share the code, it can be difficult for others to replicate and thereby confirm (or at least support) the results. Sharing code was not straightforward in 1996, but now we have websites like Github, which support sharing of code, and osf.io, which support sharing of code and other information.</p>
 <p>In this paper we have used the semPlot package <span class="citation" data-cites="EpskampSemPlot">(<a href="#ref-EpskampSemPlot" role="doc-biblioref">Epskamp, 2022</a>)</span> to draw path diagrams based on the models that we fitted. Although we believe that we can draw path diagrams that are more esthetically pleasing using other programs, the use of semPlot (or similar software) which takes the fitted model as input and draws output ensures that the path diagram matches the models.</p>
 <p>The cost in both time and hardware of running simulations has been dramatically reduced, thanks to Moore’s law. The original simulation was run on a 386 computer with a 20MB hard drive. Curran (personal communication) says that the simulations took ‘days and days’ and had several tweaks to try to speed them up. The simulations in the current paper were run on a 3 year old consumer PC that is primarily used to play Civilization and online Chess. We ran five times more simulations (1000 vs 200), and the whole analysis took approximately an hour to run, Rstudio saves a cache file that is 80MB (or 4x more than the computer these were originally run on), and it requires about 15GB of RAM. We could write more efficient code and reduce these dramatically (an earlier version used around 50GB of RAM and saved an 8 GB file), but our attention spans are limited, and hardware is cheap (essentially free, we can continue to play chess while the simulations run). If our time were even more valuable, we could rent a computer from a cloud provider, and a cost of around $6 per hour, increase the speed by a factor of approximately 15. Our more serious point is that the hurdles that must be overcome to do this work are dramatically reduced, and the benefits are potentially high.</p>
+<p><span class="citation" data-cites="fairchild2024many">Fairchild, Yin, Baraldi, Astivia, &amp; Shi (<a href="#ref-fairchild2024many" role="doc-biblioref">2024</a>)</span> also replicated the Curran, et al, paper in a thorough and thoughtful investigation. They also found that the results were generally consistent but with some differences. Specifically, they focused on the data generation method for the non-normal distributions - which is not something that we considered in our investigation. They found that different data generation methods for non-normal data led to different results. We cannot conclude that the differences that we found in this research are not due to data generation differences.</p>
 <p>Finally, the experience of carrying out this work has shown that, for us at least, it is very difficult to fully evaluate a simulation study by reading it, and not replicating it. The authors of CWF acknowledge both Peter Bentler and Douglas Bonett - SEM practitioners and researchers that one would generally defer to, but it appears that neither of these researchers noted the omission of the change in the residual variances. In addition, if any of the 7000+ authors who have cited this paper have made this connection, it has not been brought to our attention.</p>
 </section>
 <section id="acknowledgments" class="level1">
@@ -4811,6 +4811,9 @@ Curran, P. J., West, S. G., &amp; Finch, J. F. (1996). The robustness of test st
 </div>
 <div id="ref-EpskampSemPlot" class="csl-entry" role="listitem">
 Epskamp, S. (2022). <em>semPlot: Path diagrams and visual analysis of various SEM packages’ output</em>. Retrieved from <a href="https://CRAN.R-project.org/package=semPlot">https://CRAN.R-project.org/package=semPlot</a>
+</div>
+<div id="ref-fairchild2024many" class="csl-entry" role="listitem">
+Fairchild, A. J., Yin, Y., Baraldi, A. N., Astivia, O. L. O., &amp; Shi, D. (2024). Many nonnormalities, one simulation: Do different data generation algorithms affect study results? <em>Behavior Research Methods</em>, 1–21. Springer.
 </div>
 <div id="ref-hu1999cutoff" class="csl-entry" role="listitem">
 Hu, L., &amp; Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. <em>Structural equation modeling: a multidisciplinary journal</em>, <em>6</em>(1), 1–55.
